@@ -17,12 +17,12 @@ An example of the input files are shown in the ```example``` folder
 
 ## Job configuration
 Key parameters for the processing and their explanations are offered directly in ```config.txt```
-```
+```matlab
 %%% Parallel setting
 npool=10                 % set number of workers in parpool
 
 %%% initiation (g01-g04)
-filename=%file
+filename=lumberton.tif
 projdir=./               % the relative or absolute path that contains data, mask, hand and val 
 directories 
 usemask=true              % use mask with same input filename but under {inputdir}_mask folder (false)
