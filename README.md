@@ -1,8 +1,11 @@
 # SBATool
-Split-based Approach for SAR-based Change Detection
+Split-based Approach for SAR-based Change Detection.
+This tool contains two algorithms:
+1. ```GSBA```: Growing Split-Based Approach. Parallel computation is supported.
+2. ```HSBA```: Hierarchical Split-Based Approach. 
 
 ## Environment Preparation
-Add subfolder ```main``` and ```kernel``` to your Matlab path
+Add subfolder ```main``` and ```kernel``` to your MATLAB path
 
 ## Input Files
 An example of the input files are shown in the ```example``` folder
@@ -14,6 +17,8 @@ An example of the input files are shown in the ```example``` folder
 |lumberton_hand.tif|HANDEM values in meters|No|
 |lumberton_lia.tif|Local incidence angles in degrees|No|
 |lumberton_val.tif|Validation data<br />0=no change<br />1=change|No|
+
+Note that all input files need to share the same prefix.
 
 ## Job configuration
 Key parameters for the processing and their explanations are offered directly in ```config.txt```
@@ -86,4 +91,48 @@ handthresh=[nan 20]         % [m] [nan 20] means to keep values with handem>20
 liathresh=80                  % [deg] max local incidence angle (above which the validation will be masked out during validation)
 %Each set of AOI is separated by ";", and the format is lon1 lat1 lon2 lat2 for UL and LR corner coordinates
 %valaoi=[lon1 lat1 lon2 lat2; lon1 lat1 lon2 lat2]
+```
+## GSBA Job Execution Flow
+Driver file: ```gsba_driver```
+
+Launch MATLAB, and you can get the help menu direction by using ```help```:
+```
+>>help gsba_driver
+function gsba_driver(startfrom,endat,fconfig,[ft,splitid])
+ fconfig: configure file 
+ ct: change type, 1=amp- changes
+                  3=amp+ changes
+                  0=both types
+     if ct not specified, steps will be executed in sequence
+ step can be the following. 
+   step 1:  g01_filter       : data preparation
+   step 2:  g02_init         : tile initiation step 1
+   step 3:  g03_inito        : tile initiation step 2
+   step 4:  g04_selshift     : tile initiation step 3
+   step 5:  g05_fpmlow.m     : select tiles for amp- changes
+   step 6:  g06_fpmhigh.m    : select tiles for amp+ changes
+   step 7:  g07_interplow.m  : growing tiles for amp- changes
+   step 8:  g08_interphigh.m : growing tiles for amp+ changes
+   step 9:  g09_qcmetrics.m  : QC plot for metrics
+   step 10: g10_qcplotlow.m  : QC plot for amp- changes
+   step 11: g11_qcplothigh.m : QC plot for amp+ changes
+   step 12: g12_cluster.m    : geospatial clustering 
+   step 13: g13_handem.m     : apply HANDEM
+   step 14: g14_xv.m         : cross-validation between two tracks (standalone)
+   step 15: g15_validate.m   : validate over known results (val file required)
+   step 16: g16_roc.m        : calculate ROC curve (val file required)
+```
+
+To run the entire flow in one go, do:
+```
+>>gsba_driver(1,15,'config.txt')
+```
+
+## HSBA Job Execution Flow
+Driver file: ```hsba_driver```
+
+Launch MATLAB, and you can get the help menu direction by using ```help```:
+```
+>>help hsba_driver
+function hsba_driver(startfrom,endat,fconfig,[ft,splitid])
 ```
