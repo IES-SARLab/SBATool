@@ -226,8 +226,16 @@ To run the entire flow in one go, do:
 |**out**|lumberton.tif|The Z-score map used in change detection<br /><sub>This file will be different from the input file if dolee=true in ```config.txt``` |
 | |lumberton_hsbaintp_lo_const_mean_p50_bw50.tif|binary map for Z- change detection<sub><br />*const_mean*: fill method<br />*p50*: cutoff probability=0.5<br />*bw50*: min patch size in pixels</sub>|
 | |lumberton_hsbaintp_hi_const_mean_p50_bw50.tif|binary map for Z+ change detection<sub><br />*const_mean*: fill method<br />*p50*: cutoff probability=0.5<br />*bw50*: min patch size in pixels</sub>|
-| |lumberton_clstX_const_mean_bw50.tif|binary map for both Z- and Z+ change detection<sub><br />*clstX*: no geospatial clustering<br />*const_mean*: fill method<br />*bw50*: min patch size in pixels</sub>|
-| |lumberton_hand5_clstX_const_mean_bw50.tif|binary map for change detection after post-processing<sub><br />*hand5*: HANDEM threshold of 5 m<br />*clstX*: no geospatial clustering applied<br />*const_mean*: fill method<br />*bw50*: min patch size in pixels</sub>|
+| |lumberton_hsbaclstX_const_mean_bw50.tif|binary map for both Z- and Z+ change detection<sub><br />*clstX*: no geospatial clustering<br />*const_mean*: fill method<br />*bw50*: min patch size in pixels</sub>|
+| |lumberton_hand5_hsbaclstX_const_mean_bw50.tif|binary map for change detection after post-processing<sub><br />*hand5*: HANDEM threshold of 5 m<br />*clstX*: no geospatial clustering applied<br />*const_mean*: fill method<br />*bw50*: min patch size in pixels</sub>|
 | |lumberton_hsbaintp_lo_const_mean_prob.tif|probability map for Z- change detection<sub><br />*const_mean*: fill method</sub>|
 | |lumberton_hsbaintp_hi_const_mean_prob.tif|probability map for Z+ change detection<sub><br />*const_mean*: fill method</sub>|
 | |lumberton_hsbaclstX_const_mean_prob.tif|probability map for both Z- and Z+ change detection<sub><br />*const_mean*: fill method</sub>|
+|**qc**|06_qcplothsba.png|QC plot for step 6|
+| |02_hsba.log<br />04_hsbaplow.log<br />05_hsbaphigh.log|Log files for different steps|
+| |04_hsbaplow.txt<br />05_hsbaphigh.txt|Performance information for step 04-05|
+| |12_finalfile_mean_bw50.txt|Current constituting files (Z- and Z+) for the final change map|
+|**val**|lumberton_hand5_hsbaclstX_const_mean_bw50_full.png|Validation plot for full area|
+| |lumberton_hand5_hsbaclstX_const_mean_bw50_AOI1.png<br />lumberton_hand5_hsbaclstX_const_mean_bw50_AOI2.png|Validation plot for AOI1 and AOI2<br /><sub>Set AOI1 and AOI2 in ```config.txt```</sub>|
+| |15_val.log|Log file for step 15|
+| |val_Z_lee3_hand5_hsbaclstX_const_mean_bw50.txt|Output metrics for validation|
