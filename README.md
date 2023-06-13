@@ -171,18 +171,23 @@ Refer to the folder and files under ```example``` directory
 |Folder|File Name|Description|
 |:---|:---|:---|
 |**out**|lumberton.tif|The Z-score map used in change detection<br /><sub>This file will be different from the input file if dolee=true in ```config.txt``` |
-| |lumberton_const_mean_bw50.tif|binary map for change detection<sub><br />*const_mean*: fill method<br />*bw50*: min patch size in pixels</sub>|
-| |lumberton_hand5_clstX_const_mean_bw50.tif|binary map for change detection<sub><br />*hand5*: HANDEM threshold of 5 m<br />*clstX*: no geospatial clustering applied<br />*const_mean*: fill method<br />*bw50*: min patch size in pixels</sub>|
-| |lumberton_const_mean_prob.tif|probability map for change detection<sub><br />*const_mean*: fill method</sub>|
+| |lumberton_lo_const_mean_p50_bw50.tif|binary map for Z- change detection<sub><br />*const_mean*: fill method<br />*p50*: cutoff probability=0.5<br />*bw50*: min patch size in pixels</sub>|
+| |lumberton_hi_const_mean_p50_bw50.tif|binary map for Z+ change detection<sub><br />*const_mean*: fill method<br />*p50*: cutoff probability=0.5<br />*bw50*: min patch size in pixels</sub>|
+| |lumberton_const_mean_bw50.tif|binary map for both Z- and Z+ change detection<sub><br />*const_mean*: fill method<br />*bw50*: min patch size in pixels</sub>|
+| |lumberton_hand5_clstX_const_mean_bw50.tif|binary map for change detection after post-processing<sub><br />*hand5*: HANDEM threshold of 5 m<br />*clstX*: no geospatial clustering applied<br />*const_mean*: fill method<br />*bw50*: min patch size in pixels</sub>|
+| |lumberton_intp_lo_const_mean_prob.tif|probability map for Z- change detection<sub><br />*const_mean*: fill method</sub>|
+| |lumberton_intp_hi_const_mean_prob.tif|probability map for Z+ change detection<sub><br />*const_mean*: fill method</sub>|
+| |lumberton_const_mean_prob.tif|probability map for both Z- and Z+ change detection<sub><br />*const_mean*: fill method</sub>|
 |**qc**|10_qcplotlow.png<br />11_qcplothigh.png<br />12_clusterX_const_mean_bw50.pn<br />13_hand5_clstX_const_mean_bw50.png|QC plot for step 10-13|
 | |02_init.log<br />05_growlow.log<br />06_growhigh.log<br />07_interplow.log<br />08_interphigh.log<br />12_cluster.log|Log files for different steps|
 | |07_interplow.txt<br />08_interphigh.txt|Performance information for step 07-08|
 | |12_finalfile_const_mean_bw50.txt|Current constituting files (Z- and Z+) for the final change map|
 | |time_g02<br />time_g05<br />time_g06<br />time_g07<br />time_g08|Conputation time (in sec) for critical steps|
-|**val**|lumerton_hand5_clstX_const_mean_bw50_full.png|Validation plot for full area|
-| |lumerton_hand5_clstX_const_mean_bw50_AOI1.png<br />lumerton_hand5_clstX_const_mean_bw50_AOI2.png|Validation plot for AOI1 and AOI2<br /><sub>Set AOI1 and AOI2 in ```config.txt```</sub>|
+|**val**|lumberton_hand5_clstX_const_mean_bw50_full.png|Validation plot for full area|
+| |lumberton_hand5_clstX_const_mean_bw50_AOI1.png<br />lumberton_hand5_clstX_const_mean_bw50_AOI2.png|Validation plot for AOI1 and AOI2<br /><sub>Set AOI1 and AOI2 in ```config.txt```</sub>|
 | |15_val.log|Log file for step 15|
 | |val_Z_lee3_hand5_clstX_const_mean_bw50.txt|Output metrics for validation|
+
 
 ## HSBA Job Execution Flow
 Driver file: ```hsba_driver```
@@ -214,3 +219,15 @@ To run the entire flow in one go, do:
 ```
 >>hsba_driver(1,15,'config.txt')
 ```
+
+### HSBA Output Files
+|Folder|File Name|Description|
+|:---|:---|:---|
+|**out**|lumberton.tif|The Z-score map used in change detection<br /><sub>This file will be different from the input file if dolee=true in ```config.txt``` |
+| |lumberton_hsbaintp_lo_const_mean_p50_bw50.tif|binary map for Z- change detection<sub><br />*const_mean*: fill method<br />*p50*: cutoff probability=0.5<br />*bw50*: min patch size in pixels</sub>|
+| |lumberton_hsbaintp_hi_const_mean_p50_bw50.tif|binary map for Z+ change detection<sub><br />*const_mean*: fill method<br />*p50*: cutoff probability=0.5<br />*bw50*: min patch size in pixels</sub>|
+| |lumberton_clstX_const_mean_bw50.tif|binary map for both Z- and Z+ change detection<sub><br />*clstX*: no geospatial clustering<br />*const_mean*: fill method<br />*bw50*: min patch size in pixels</sub>|
+| |lumberton_hand5_clstX_const_mean_bw50.tif|binary map for change detection after post-processing<sub><br />*hand5*: HANDEM threshold of 5 m<br />*clstX*: no geospatial clustering applied<br />*const_mean*: fill method<br />*bw50*: min patch size in pixels</sub>|
+| |lumberton_hsbaintp_lo_const_mean_prob.tif|probability map for Z- change detection<sub><br />*const_mean*: fill method</sub>|
+| |lumberton_hsbaintp_hi_const_mean_prob.tif|probability map for Z+ change detection<sub><br />*const_mean*: fill method</sub>|
+| |lumberton_hsbaclstX_const_mean_prob.tif|probability map for both Z- and Z+ change detection<sub><br />*const_mean*: fill method</sub>|
