@@ -195,7 +195,7 @@ Driver file: ```hsba_driver```
 Launch MATLAB, and you can get the help menu direction by using ```help```:
 ```
 >> help hsba_driver
- function gsba_driver(startfrom,endat,fconfig,[ct,splitid])
+ function hsba_driver(startfrom,endat,fconfig,[ct,splitid])
   fconfig: configure file 
   ct: change type, 1=Z- changes
                    3=Z+ changes
