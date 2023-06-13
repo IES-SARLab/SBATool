@@ -113,7 +113,7 @@ minpatchhigh=3200          % [m^2] min area for the changed patch w. amp jump
 
 %%% geospatial processing (g12-g13 suggested for landslide) 
 docluster=false             % run geospatial clustering (g12)
-dohandem=false              % apply handem mask (g13)
+dohandem=true               % apply handem mask (g13)
 noplow=false                % ignore probability for amp- changes
 clusterdist=100             % [m] max distance btw points within a landslide cluster
 clusterarea=3000            % [m^2] min area for a landslide cluster shown in the tif file
