@@ -173,8 +173,11 @@ Refer to the folder and files under ```example``` directory
 |**out**|lumberton_const_mean_bw50.tif|binary map for change detection<sub><br />*const_mean*: fill method<br />*bw50*: min patch size in pixels</sub>|
 | |lumberton_hand5_clstX_const_mean_bw50.tif|binary map for change detection<sub><br />*hand5*: HANDEM threshold of 5 m<br />*clstX*: no geospatial clustering applied<br />*const_mean*: fill method<br />*bw50*: min patch size in pixels</sub>|
 | |lumberton_const_mean_prob.tif|probability map for change detection<sub><br />*const_mean*: fill method</sub>|
-|**qc**|10_qcplotlow.png<br />11_qcplothigh.png<br />12_clusterX_const_mean_bw50.pn<br />13_hand5_clstX_const_mean_bw50.png|QC plot from step 10-13|
+|**qc**|10_qcplotlow.png<br />11_qcplothigh.png<br />12_clusterX_const_mean_bw50.pn<br />13_hand5_clstX_const_mean_bw50.png|QC plot for step 10-13|
 | |02_init.log<br />05_growlow.log<br />06_growhigh.log<br />07_interplow.log<br />08_interphigh.log<br />12_cluster.log|Log files for different steps|
+| |07_interplow.txt<br />08_interphigh.txt|Performance information for step 07-08|
+| |12_finalfile_const_mean_bw50.txt|Current constituting files (Z- and Z+) for the final change map|
+| |time_g02<br />time_g05<br />time_g06<br />time_g07<br />time_g08|Conputation time (in sec) for critical steps|
 
 
 ## HSBA Job Execution Flow
