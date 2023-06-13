@@ -4,7 +4,7 @@ This tool contains two algorithms:
 1. ```GSBA```: Growing Split-Based Approach. Parallel computation is supported.
 2. ```HSBA```: Hierarchical Split-Based Approach. 
 
-**Note**: This work is currently under review now. All source codes will be available after the review process is complete.
+**Note: This work is currently under review. All source codes will be available after the review process is complete.**
 
 ## Environment Preparation
 Add subfolder ```main``` and ```kernel``` to MATLAB path by
