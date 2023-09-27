@@ -27,7 +27,9 @@ An example of the input files are shown in the ```example``` folder
 |lumberton_lia.tif|Local incidence angles (LIA) in degrees|Optional|
 |lumberton_val.tif|Validation data<br />0=no change<br />1=change|Optional|
 
-All input files need to share the same prefix. If any of the optional files is not present in the folder, the corresponding step (masking/hand masking/lia masking/validation) will be omitted.
+All input files need to share the same prefix. The suffix can be **.tif** (recommended), **.img** or **any isce suffix**.
+
+If any of the optional files is not present in the folder, the corresponding step (masking/hand masking/lia masking/validation) will be omitted.
 
 The first four tif files need to be in the same image size. The validation file can have a different image size, usually smaller than the other four files. 
 
