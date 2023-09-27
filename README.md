@@ -24,16 +24,22 @@ An example of the input files are shown in the ```example``` folder
 |lumberton.tif|Z-score map|Required|
 |lumberton_mask.tif|Layover and shadow mask<br />0=non-masked<br />other values=masekd|Optional|
 |lumberton_hand.tif|HANDEM values in meters|Optional|
-|lumberton_lia.tif|Local incidence angles in degrees|Optional|
+|lumberton_lia.tif|Local incidence angles (LIA) in degrees|Optional|
 |lumberton_val.tif|Validation data<br />0=no change<br />1=change|Optional|
 
-All input files need to share the same prefix.
+All input files need to share the same prefix. If any of the optional files is not present in the folder, the corresponding step (masking/hand masking/lia masking/validation) will be omitted.
 
-If any of the optional files is not present in the folder, the corresponding step (masking/hand masking/lia masking/validation) will be omitted.
+The first four tif files need to be in the same image size. The validation file can have a different image size, usually smaller than the other four files. 
 
-For HANDEM files, refer to:
+All files need to be in the same reference frame.
 
+For information about **HANDEM**, refer to:
 
+Rennó, C. D., Nobre, A. D., Cuartas, L. A., Soares, J. V., Hodnett, M. G., Tomasella, J., & Waterloo, M. J. (2008). HAND, a new terrain descriptor using SRTM-DEM: Mapping terra-firme rainforest environments in Amazonia. Remote Sensing of Environment, 112(9), 3469-3481. https://doi.org/https://doi.org/10.1016/j.rse.2008.03.018
+
+For information about **LIA**, refer to:
+
+Shibayama, T., Yamaguchi, Y., & Yamada, H. (2015). Polarimetric Scattering Properties of Landslides in Forested Areas and the Dependence on the Local Incidence Angle. Remote Sensing, 7(11). https://doi.org/10.3390/rs71115424 
 
 
 ## Job configuration
