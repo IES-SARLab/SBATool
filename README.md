@@ -7,6 +7,8 @@ This tool contains two algorithms:
 **Note: This work is currently under review. All source codes will be available after the review process is complete.**
 
 ## Environment Preparation
+It is recommended that you run SBATool in MATLAB 2019b or later versions.
+
 Add subfolder ```main``` and ```kernel``` to MATLAB path by
 
 ```matlab
@@ -16,16 +18,23 @@ addpath('{SBATool folder}/kernel')
 
 ## Input Files
 An example of the input files are shown in the ```example``` folder
-|File Name|Description|Required|
+|File Name|Description|Required/Optional|
 |:---|:---|:---|
-|config.txt|Job configuration file|Yes|
-|lumberton.tif|Z-score map|Yes|
-|lumberton_mask.tif|Layover and shadow mask<br />0=non-masked<br />other values=masekd|No|
-|lumberton_hand.tif|HANDEM values in meters|No|
-|lumberton_lia.tif|Local incidence angles in degrees|No|
-|lumberton_val.tif|Validation data<br />0=no change<br />1=change|No|
+|config.txt|Job configuration file|Required|
+|lumberton.tif|Z-score map|Required|
+|lumberton_mask.tif|Layover and shadow mask<br />0=non-masked<br />other values=masekd|Optional|
+|lumberton_hand.tif|HANDEM values in meters|Optional|
+|lumberton_lia.tif|Local incidence angles in degrees|Optional|
+|lumberton_val.tif|Validation data<br />0=no change<br />1=change|Optional|
 
-Note that all input files need to share the same prefix.
+All input files need to share the same prefix.
+
+If any of the optional files is not present in the folder, the corresponding step (masking/hand masking/lia masking/validation) will be omitted.
+
+For HANDEM files, refer to:
+
+
+
 
 ## Job configuration
 Here is an example of the job configuration file ```config.txt``` for GSBA:
