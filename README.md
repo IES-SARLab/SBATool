@@ -20,7 +20,8 @@ addpath('{SBATool folder}/kernel')
 An example of the input files are shown in the ```example``` folder
 |File Name|Description|Required/Optional|
 |:---|:---|:---|
-|config.txt|Job configuration file|Required|
+|config_gsba.txt|Job configuration file for GSBA|Required|
+|config_hsba.txt|Job configuration file for HSBA|Required|
 |lumberton.tif|Z-score map|Required|
 |lumberton_mask.tif|Layover and shadow mask<br />0=non-masked<br />other values=masekd|Optional|
 |lumberton_hand.tif|HANDEM values in meters|Optional|
@@ -45,44 +46,117 @@ Shibayama, T., Yamaguchi, Y., & Yamada, H. (2015). Polarimetric Scattering Prope
 
 
 ## Job configuration
-Here is an example of the job configuration file ```config.txt``` for GSBA:
+Here is an example of the job configuration file ```config_gsba.txt``` for GSBA:
 ```matlab
 %%% Parallel setting
-npool=12                  % set number of workers for parallel processing
+npool=12                 % set number of workers for parallel processing
 
-%%% initiation (g01-g04)
-filename=ampEventNorm_lee3_large_para500.tif
+%%% data preparation (g01)
+filename=lumberton.tif
 projdir=./                % the relative or absolute path that contains data, mask, hand and val directories 
 usemask=false             % use mask with same input filename but under {projdir}/mask folder (false)
 dolee=false               % true for additional lee filter (false)
 split=false               % split image into 2x2 sub-images (memory issue) (false)
 splitsize=[2 2]           % [split_y  split_x] split image into split_y by split_x subimages
-crop=false                % crop a sub area (false)
-%aoi=[x1 y1; x2 y2]       % aoi for cropping; x1 y1 x2 y2 are in pixels
+docrop=false              % crop a sub area (false); aoi needs to be specified
+%aoi=[x1 y1; x2 y2]       % aoi for cropping (pixel and line)
 %filtwin=3                % lee filter window 
-%tsize=50                 % tile size (default is 50)
+%pixelres=10               % pixel posting in meter (for area calculation); usually estimated automatically; uncomment to set manually
 
-%%% selection thresholds (g05-g06)
-%         AD    BC   SR   NA
-threshG1=[1.9  .99  .10  0.4];  
-threshG3=[1.9  .99  .05  0.4];  
+%%% initialization (g02)
+tsize=50             % initialize tile size
+changetype=0         % change detection type; 1=Z-, 3=Z+, 0=both (default)
+%         AD   BC   SR   AS    M  NIA
+threshG1=[1.9 .980 .10 0.10 -2.0];      % for flood
+threshG3=[1.9 .980 .05 0.05  2.5 0.4];  % for flood
+%threshG1=[1.9 .980 .05 0.10 -1.5];       % for landslide
+%threshG3=[1.9 .980 .05 0.10  2.5 0.4];   % for landslide
+%         BC   C1lower C1upper C2lower C2upper   (thresholds for single-mode method)
+%threshG =[.80 -5      -1      1       5]  % for single mode
 
-%%% tile growing (g07-g08)
-nthresh=1                  % [>=1] min number of connected tiles needed
+%%% tile growing (g03-g04)
+%useG2=true                 % use statistics from 2nd Gaussian. If false, u
+se mean=0 and std=1 (true)
+nthresh=1                   % [>=1] min number of connected tiles needed
+methodlow=const_mean        % fill method (wmean, mean, quantile, const_max, const_mean, const_med, const_q, invdist)
+methodhigh=const_mean       % fill method (wmean, mean, quantile, const_max, const_mean, const_med, const_q, invdist)
+methodlowq=0.5             % [0-1] supply this value when methodlow=quantile
+methodhighq=0.5            % [0-1] supply this value when methodhigh=quantile
+pcutlow=0.5                % [0-1] cut-off probability for changes w. Z-
+pcuthigh=0.5               % [0-1] cut-off probability for changes w. Z+
+minpatchlow=640            % [m^2] min area for the changed patch w. Z-
+minpatchhigh=640           % [m^2] min area for the changed patch w. Z+
+%lookpF=1;                 % look number for Bayesian probably (for display purpose)
+%lookRk=1;                 % look number on binary change map over whick ripley coeff will be estimated
+
+%%% fill statistics (g05-g06)
+Rkfinallow=med             % choose the change map of Z- with the Rk level (low, med, high), default: med
+Rkfinalhigh=med            % choose the change map of Z+ with the Rk level (low, med, high), default: med
+
+%%% qc plots (g07-g09)
+qlow=.05                   % the lower Rk quantile for selected plotting
+qmid=.50                   % the mid Rk quantile for selected plotting
+qhigh=.95                  % the higher Rk qunatile for selected plotting
+
+%%% geospatial processing (g10-g11 suggested for landslide) 
+docluster=false             % run geospatial clustering (g12)
+dohandem=true               % apply handem mask (g13)
+clusterdist=100             % [m] max distance btw points within a landslide cluster
+clusterarea=3000            % [m^2] min area for a landslide cluster shown in the tif file
+clusterlarge=10000          % [m^2] min area for a large landslide cluster (with area report)
+handthresh=[5 nan]         % [m] [nan 20] means to keep values with handem>20
+                            %     [20 nan] means to keep values with handem<20
+                            %     [10  20] means to keep values in between
+
+%%% validation (g12-g13)
+liathresh=80                  % [deg] max local incidence angle (above which the validation will be masked out)
+%AOIs are separated by ";", and the format is lon1 lat1 lon2 lat2 for UL and LR corner coordinates
+valaoi=[-79.0751011 34.650042 -78.974849 34.599916; -79.029483 34.619153 -79.014066 34.601942; -79.0223 34.6230 -79.0147 34.6148; -79.0064 34.6278 -78.9996 34.6197]
+valaoiID=[1,2,3,3]
+%[val_small; urban_old; urban_new1; urban_new2]
+valtifout=true              % output the validation tiff for each aoi, [TP,FP,TN,FN]=[1 2 -1 -2]
+```
+
+Here is an example of the job configuration file ```config_hsba.txt``` for HSBA:
+```matlab
+%%% Parallel setting
+npool=12                 % set number of workers for parallel processing
+
+%%% data preparation (g01)
+filename=ampEventNorm_lee3_large_para500.tif
+projdir=./                % the relative or absolute path that contains data, mask, hand and val directories 
+usemask=false             % use mask with same input filename but under {projdir}/mask folder (false)
+dolee=false               % true for additional lee filter (false)
+docrop=false              % crop a sub area (false); aoi needs to be specified
+%aoi=[x1 y1; x2 y2]       % aoi for cropping (pixel and line)
+%filtwin=3                % lee filter window 
+%pixelres=10               % pixel posting in meter (for area calculation); usually estimated automatically; uncomment to set manually
+
+%%% selection thresholds (h02-h03)
+%         AD   BC   SR   AS    M  NIA
+threshG1=[1.9 .980 .10 0.10 -2.0];      % for flood
+threshG3=[1.9 .980 .05 0.05  2.5 0.4];  % for flood
+%threshG1=[1.9 .980 .05 0.10 -1.5];       % for landslide
+%threshG3=[1.9 .980 .05 0.10  2.5 0.4];   % for landslide
+%         BC   C1lower C1upper C2lower C2upper   (thresholds for single-mode method)
+threshG =[.80 -5      -1      1       5]  % for single mode
+
+%%% fill statistics and generate flood map (h04-h05)
+%useG2=true                % use statistics from 2nd Gaussian. If false, use mean=0 and std=1 (true)
 methodlow=const_mean       % fill method (wmean, mean, quantile, const_max, const_mean, const_med, const_q, invdist)
 methodhigh=const_mean      % fill method (wmean, mean, quantile, const_max, const_mean, const_med, const_q, invdist)
 methodlowq=0.5             % [0-1] supply this value when methodlow=quantile
 methodhighq=0.5            % [0-1] supply this value when methodhigh=quantile
-pcutlow=0.5                % [0-1] cut-off probability for changes w. amp drop
-pcuthigh=0.5               % [0-1] cut-off probability for changes w. amp jump
-minpatchlow=3200           % [m^2] min area for the changed patch w. amp drop
-minpatchhigh=3200          % [m^2] min area for the changed patch w. amp jump
+pcutlow=0.5                % [0-1] cut-off probability for changes w. Z-
+pcuthigh=0.5               % [0-1] cut-off probability for changes w. Z+
+minpatchlow=3200           % [m^2] min area for the changed patch w. Z-
+minpatchhigh=6400          % [m^2] min area for the changed patch w. Z+
 %lookpF=1;                 % look number for Bayesian probably (for display purpose)
+%lookRk=1;                 % look number on binary change map over whick ripley coeff will be estimated
 
-%%% geospatial processing (g12-g13; suggested for landslide) 
+%%% geospatial processing (g10-g11 suggested for landslide) 
 docluster=false             % run geospatial clustering (g12)
 dohandem=true               % apply handem mask (g13)
-noplow=false                % ignore probability for amp- changes
 clusterdist=100             % [m] max distance btw points within a landslide cluster
 clusterarea=3000            % [m^2] min area for a landslide cluster shown in the tif file
 clusterlarge=10000          % [m^2] min area for a large landslide cluster (with area report)
@@ -90,60 +164,12 @@ handthresh=[5 nan]          % [m] [nan 20] means to keep values with handem>20
                             %     [20 nan] means to keep values with handem<20
                             %     [10  20] means to keep values in between
 
-%%% validation (g15)
-liathresh=80                % [deg] max local incidence angle (above which the validation will be masked out)
-%multiple AOIs are separated by ";", the format is lon1 lat1 lon2 lat2 for UL and LR corner coordinates
-valaoi=[lon11 lat11 lon12 lat12; lon21 lat21 lon22 lat22]
-valaoiID=[1,2]
-valtifout=true              % output the validation tiff for each aoi, [TP,FP,TN,FN]=[1 2 -1 -2]
-```
-
-Here is an example of the job configuration file ```config.txt``` for HSBA:
-```matlab
-%%% Parallel setting
-npool=12                  % set number of workers for parallel processing
-
-%%% initiation (h01)
-filename=ampEventNorm_lee3_large_para500.tif
-projdir=./                % the relative or absolute path that contains data, mask, hand and val directories 
-usemask=false             % use mask with same input filename but under {projdir}/mask folder (false)
-dolee=false               % true for additional lee filter (false)
-crop=false                % crop a sub area (false)
-%aoi=[x1 y1; x2 y2]       % aoi for cropping
-%filtwin=3                % lee filter window 
-
-%%% selection thresholds (h02,h04)
-%         AD    BC   SR   NA
-threshG1=[1.9  .99  .10  0.4];  
-threshG3=[1.9  .99  .05  0.4];  
-
-%%% generate flood map (h03,h05)
-methodlow=const_mean       % fill method (wmean, mean, quantile, const_max, const_mean, const_med, const_q, invdist)
-methodhigh=const_mean      % fill method (wmean, mean, quantile, const_max, const_mean, const_med, const_q, invdist)
-methodlowq=0.5             % [0-1] supply this value when methodlow=quantile
-methodhighq=0.5            % [0-1] supply this value when methodhigh=quantile
-pcutlow=0.5                % [0-1] cut-off probability for changes w. amp drop
-pcuthigh=0.5               % [0-1] cut-off probability for changes w. amp jump
-minpatchlow=3200           % [m^2] min area for the changed patch w. amp drop
-minpatchhigh=3200          % [m^2] min area for the changed patch w. amp jump
-%lookpF=1;                 % look number for Bayesian probably (for display purpose)
-
-%%% geospatial processing (g12-g13 suggested for landslide) 
-docluster=false             % run geospatial clustering (g12)
-dohandem=true               % apply handem mask (g13)
-noplow=false                % ignore probability for amp- changes
-clusterdist=100             % [m] max distance btw points within a landslide cluster
-clusterarea=3000            % [m^2] min area for a landslide cluster shown in the tif file
-clusterlarge=10000          % [m^2] min area for a large landslide cluster (with area report)
-handthresh=[nan 20]         % [m] [nan 20] means to keep values with handem>20
-                            %     [20 nan] means to keep values with handem<20
-                            %     [10  20] means to keep values in between
-
-%%% validation (g15)
-liathresh=80                % [deg] max local incidence angle (above which the validation will be masked out)
-%multiple AOIs are separated by ";", the format is lon1 lat1 lon2 lat2 for UL and LR corner coordinates
-valaoi=[lon11 lat11 lon12 lat12; lon21 lat21 lon22 lat22]
-valaoiID=[1,2]
+%%% validation (g12-g13)
+liathresh=80                  % [deg] max local incidence angle (above which the validation will be masked out)
+%AOIs are separated by ";", and the format is lon1 lat1 lon2 lat2 for UL and LR corner coordinates
+valaoi=[-79.0751011 34.650042 -78.974849 34.599916; -79.029483 34.619153 -79.014066 34.601942; -79.0223 34.6230 -79.0147 34.6148; -79.0064 34.6278 -78.9996 34.6197]
+valaoiID=[1,2,3,3]
+%[val_small; urban_old; urban_new1; urban_new2]
 valtifout=true              % output the validation tiff for each aoi, [TP,FP,TN,FN]=[1 2 -1 -2]
 ```
 
@@ -153,41 +179,50 @@ Driver file: ```gsba_driver```
 Launch MATLAB, and you can get the help menu direction by using ```help```:
 ```
 >> help gsba_driver
- function gsba_driver(startfrom,endat,fconfig,[ct,splitid])
-  fconfig: configure file 
-  ct: change type, 1=Z- changes
-                   3=Z+ changes
-                   0=both types
-      if ct not specified, steps will be executed in sequence
+ function gsba_driver(startfrom,endat,fconfig,[splitid])
+  Execute GSBA (Growing Split Based Approach) for change detection
+  
+  Note: current input file should be a Z-score map
+        to change default histogram fitting setup, go to
+        SBATool/kernel/setGaussianInitials.m
+ 
+  fconfig: user-specified configuration file
+  splitid: the split ID when the image is too large 
+           and is split into multiple subimages
+           for a (2x2) split, the splitid is
+            1 2
+            3 4
+ 
   step can be the following. 
     step 1:  g01_filter       : data preparation
-    step 2:  g02_init         : tile initiation step 1
-    step 3:  g03_inito        : tile initiation step 2
-    step 4:  g04_selshift     : tile initiation step 3
-    step 5:  g05_fpmlow.m     : select tiles for amp- changes
-    step 6:  g06_fpmhigh.m    : select tiles for amp+ changes
-    step 7:  g07_interplow.m  : growing tiles for amp- changes
-    step 8:  g08_interphigh.m : growing tiles for amp+ changes
-    step 9:  g09_qcmetrics.m  : QC plot for metrics
-    step 10: g10_qcplotlow.m  : QC plot for amp- changes
-    step 11: g11_qcplothigh.m : QC plot for amp+ changes
-    step 12: g12_cluster.m    : geospatial clustering 
-    step 13: g13_handem.m     : apply HANDEM
-    step 14: g14_xv.m         : cross-validation between two tracks (standalone)
-    step 15: g15_validate.m   : validate over known results (val file required)
+    step 2:  g02_init         : initialize tile splitting and histogram fitting
+    step 3:  g03_growlow.m    : tile growing for Z- changes
+    step 4:  g04_growhigh.m   : tile growing for Z+ changes
+    step 5:  g05_interplow.m  : fill statistics for Z- changes
+    step 6:  g06_interphigh.m : fill statistics for Z+ changes
+    step 7:  g07_qcmetrics.m  : calculate QC metrics
+    step 8:  g08_qcplotlow.m  : QC plot for Z- changes
+    step 9:  g09_qcplothigh.m : QC plot for Z+ changes
+    step 10: g10_cluster.m    : geospatial clustering 
+    step 11: g11_applyhand.m  : apply HANDEM
+    step 12: g12_xv.m         : cross-validation between two tracks (stand alone)
+    step 13: g13_validate.m   : validate over known results
+                                calculate ROC curve (optional)
+ 
+  NinaLin@2023
 ```
 
 
 To run the entire flow in one go, do:
 ```
->>gsba_driver(1,15,'config.txt')
+>>gsba_driver(1,13,'config_gsba.txt')
 ```
 
 ### GSBA Output Files
 Refer to the folder and files under ```example``` directory
 |Folder|File Name|Description|
 |:---|:---|:---|
-|**out**|lumberton.tif|The Z-score map used in change detection<br /><sub>This file will be different from the input file if dolee=true in ```config.txt``` |
+|**out**|lumberton.tif|The Z-score map used in change detection<br /><sub>This file will be different from the input file if dolee=true in ```config_*.txt``` |
 | |lumberton_lo_const_mean_p50_bw50.tif|binary map for Z- change detection<sub><br />*const_mean*: fill method<br />*p50*: cutoff probability=0.5<br />*bw50*: min patch size in pixels</sub>|
 | |lumberton_hi_const_mean_p50_bw50.tif|binary map for Z+ change detection<sub><br />*const_mean*: fill method<br />*p50*: cutoff probability=0.5<br />*bw50*: min patch size in pixels</sub>|
 | |lumberton_const_mean_bw50.tif|binary map for both Z- and Z+ change detection<sub><br />*const_mean*: fill method<br />*bw50*: min patch size in pixels</sub>|
@@ -195,14 +230,14 @@ Refer to the folder and files under ```example``` directory
 | |lumberton_intp_lo_const_mean_prob.tif|probability map for Z- change detection<sub><br />*const_mean*: fill method</sub>|
 | |lumberton_intp_hi_const_mean_prob.tif|probability map for Z+ change detection<sub><br />*const_mean*: fill method</sub>|
 | |lumberton_const_mean_prob.tif|probability map for both Z- and Z+ change detection<sub><br />*const_mean*: fill method</sub>|
-|**qc**|10_qcplotlow.png<br />11_qcplothigh.png<br />12_clusterX_const_mean_bw50.pn<br />13_hand5_clstX_const_mean_bw50.png|QC plot for step 10-13|
-| |02_init.log<br />05_growlow.log<br />06_growhigh.log<br />07_interplow.log<br />08_interphigh.log<br />12_cluster.log|Log files for different steps|
-| |07_interplow.txt<br />08_interphigh.txt|Performance information for step 07-08|
-| |12_finalfile_const_mean_bw50.txt|Current constituting files (Z- and Z+) for the final change map|
-| |time_g02<br />time_g05<br />time_g06<br />time_g07<br />time_g08|Conputation time (in sec) for critical steps|
+|**qc**|08_qcplotlow.png<br />09_qcplothigh.png<br />10_clusterX_const_mean_bw50.pn<br />11_hand5_clstX_const_mean_bw50.png|QC plot for step 08-11|
+| |02_init.log<br />03_growlow.log<br />04_growhigh.log<br />05_interplow.log<br />06_interphigh.log<br />10_cluster.log|Log files for different steps|
+| |05_interplow.txt<br />06_interphigh.txt|Performance information for step 07-08|
+| |finalfile_const_mean_bw50.txt|Current constituting files (Z- and Z+) for the final change map (generated at step 07)|
+| |time_g02<br />time_g03<br />time_g04<br />time_g05<br />time_g06|Conputation time (in sec) for critical steps|
 |**val**|lumberton_hand5_clstX_const_mean_bw50_full.png|Validation plot for full area|
-| |lumberton_hand5_clstX_const_mean_bw50_AOI1.png<br />lumberton_hand5_clstX_const_mean_bw50_AOI2.png|Validation plot for AOI1 and AOI2<br /><sub>Set AOI1 and AOI2 in ```config.txt```</sub>|
-| |15_val.log|Log file for step 15|
+| |lumberton_hand5_clstX_const_mean_bw50_AOI1.png<br />lumberton_hand5_clstX_const_mean_bw50_AOI2.png|Validation plot for AOI1 and AOI2<br /><sub>Set AOI1 and AOI2 in ```config*.txt```</sub>|
+| |13_val.log|Log file for step 15|
 | |val_Z_lee3_hand5_clstX_const_mean_bw50.txt|Output metrics for validation|
 
 
@@ -212,35 +247,40 @@ Driver file: ```hsba_driver```
 Launch MATLAB, and you can get the help menu direction by using ```help```:
 ```
 >> help hsba_driver
- function hsba_driver(startfrom,endat,fconfig,[ct,splitid])
+ function hsba_driver(startfrom,endat,fconfig)
+  Execute HSBA (Hierarchical Split Based Approach) for change detection
+ 
+  Note: current input file should be a Z-score map
+        to change default histogram fitting setup, go to
+        SBATool/kernel/setGaussianInitials.m
+ 
   fconfig: configure file 
-  ct: change type, 1=Z- changes
-                   3=Z+ changes
-                   0=both types
-      if ct not specified, steps will be executed in sequence
   step can be the following. 
     step 1:  g01_filter       : data preparation
-    step 2:  h02_hsba_G1.m    : hsba for amp- changes
-    step 3:  h03_hsba_G3.m    : hsba for amp+ changes
-    step 4:  h04_hsbaplow.m   : generate prob and proxy maps for amp- changes
-    step 5:  h05_hsbaphigh.m  : generate prob and proxy maps for amp+ changes
+    step 2:  h02_hsba_G1.m    : hsba for Z- changes
+    step 3:  h03_hsba_G3.m    : hsba for Z+ changes
+    step 4:  h04_hsbaplow.m   : interpolate prob and create proxy maps for Z- changes
+    step 5:  h05_hsbaphigh.m  : interpolate prob and create proxy maps for Z+ changes
     step 6:  h06_qcplothsba.m : QC plots
-    step 12: g12_cluster.m    : geospatial clustering 
-    step 13: g13_handem.m     : apply HANDEM
-    step 14: g14_xv.m         : cross-validation between two tracks (standalone)
-    step 15: g15_validate.m   : validate over known results (val file required)
+    step 10: g10_cluster.m    : geospatial clustering 
+    step 11: g11_appyhand.m   : apply HANDEM
+    step 12: g12_xv.m         : cross-validation between two tracks (standalone)
+    step 13: g13_validate.m   : validate over known results 
+                                calculate ROC curve (optional)
+ 
+  NinaLin@2023
 ```
 
 
 To run the entire flow in one go, do:
 ```
->>hsba_driver(1,15,'config.txt')
+>>hsba_driver(1,13,'config_hsba.txt')
 ```
 
 ### HSBA Output Files
 |Folder|File Name|Description|
 |:---|:---|:---|
-|**out**|lumberton.tif|The Z-score map used in change detection<br /><sub>This file will be different from the input file if dolee=true in ```config.txt``` |
+|**out**|lumberton.tif|The Z-score map used in change detection<br /><sub>This file will be different from the input file if dolee=true in ```config*.txt``` |
 | |lumberton_hsbaintp_lo_const_mean_p50_bw50.tif|binary map for Z- change detection<sub><br />*const_mean*: fill method<br />*p50*: cutoff probability=0.5<br />*bw50*: min patch size in pixels</sub>|
 | |lumberton_hsbaintp_hi_const_mean_p50_bw50.tif|binary map for Z+ change detection<sub><br />*const_mean*: fill method<br />*p50*: cutoff probability=0.5<br />*bw50*: min patch size in pixels</sub>|
 | |lumberton_hsbaclstX_const_mean_bw50.tif|binary map for both Z- and Z+ change detection<sub><br />*clstX*: no geospatial clustering<br />*const_mean*: fill method<br />*bw50*: min patch size in pixels</sub>|
@@ -249,10 +289,10 @@ To run the entire flow in one go, do:
 | |lumberton_hsbaintp_hi_const_mean_prob.tif|probability map for Z+ change detection<sub><br />*const_mean*: fill method</sub>|
 | |lumberton_hsbaclstX_const_mean_prob.tif|probability map for both Z- and Z+ change detection<sub><br />*const_mean*: fill method</sub>|
 |**qc**|06_qcplothsba.png|QC plot for step 6|
-| |02_hsba.log<br />04_hsbaplow.log<br />05_hsbaphigh.log|Log files for different steps|
+| |02_hsba.log<br />03_hsba.log<br />04_hsbaplow.log<br />05_hsbaphigh.log|Log files for different steps|
 | |04_hsbaplow.txt<br />05_hsbaphigh.txt|Performance information for step 04-05|
-| |12_finalfile_mean_bw50.txt|Current constituting files (Z- and Z+) for the final change map|
+| |finalfile_mean_bw50.txt|Current constituting files (Z- and Z+) for the final change map (generated at step 06)|
 |**val**|lumberton_hand5_hsbaclstX_const_mean_bw50_full.png|Validation plot for full area|
-| |lumberton_hand5_hsbaclstX_const_mean_bw50_AOI1.png<br />lumberton_hand5_hsbaclstX_const_mean_bw50_AOI2.png|Validation plot for AOI1 and AOI2<br /><sub>Set AOI1 and AOI2 in ```config.txt```</sub>|
-| |15_val.log|Log file for step 15|
+| |lumberton_hand5_hsbaclstX_const_mean_bw50_AOI1.png<br />lumberton_hand5_hsbaclstX_const_mean_bw50_AOI2.png|Validation plot for AOI1 and AOI2<br /><sub>Set AOI1 and AOI2 in ```config*.txt```</sub>|
+| |13_val.log|Log file for step 13|
 | |val_Z_lee3_hand5_hsbaclstX_const_mean_bw50.txt|Output metrics for validation|
