@@ -44,8 +44,8 @@ For information about **LIA**, refer to:
 
 Shibayama, T., Yamaguchi, Y., & Yamada, H. (2015). Polarimetric Scattering Properties of Landslides in Forested Areas and the Dependence on the Local Incidence Angle. Remote Sensing, 7(11). https://doi.org/10.3390/rs71115424 
 
-
-## Job configuration
+## GSBA
+### Job Configuration
 Here is an example of the job configuration file ```config_gsba.txt``` for GSBA:
 ```matlab
 %%% Parallel setting
@@ -116,6 +116,75 @@ valaoiID=[1,2,3,3]
 valtifout=true              % output the validation tiff for each aoi, [TP,FP,TN,FN]=[1 2 -1 -2]
 ```
 
+### Job Execution Flow
+Driver file: ```gsba_driver```
+
+Launch MATLAB, and you can get the help menu direction by using ```help```:
+```
+>> help gsba_driver
+ function gsba_driver(startfrom,endat,fconfig,[splitid])
+  Execute GSBA (Growing Split Based Approach) for change detection
+  
+  Note: current input file should be a Z-score map
+        to change default histogram fitting setup, go to
+        SBATool/kernel/setGaussianInitials.m
+ 
+  fconfig: user-specified configuration file
+  splitid: the split ID when the image is too large 
+           and is split into multiple subimages
+           for a (2x2) split, the splitid is
+            1 2
+            3 4
+ 
+  step can be the following. 
+    step 1:  g01_filter       : data preparation
+    step 2:  g02_init         : initialize tile splitting and histogram fitting
+    step 3:  g03_growlow.m    : tile growing for Z- changes
+    step 4:  g04_growhigh.m   : tile growing for Z+ changes
+    step 5:  g05_interplow.m  : fill statistics for Z- changes
+    step 6:  g06_interphigh.m : fill statistics for Z+ changes
+    step 7:  g07_qcmetrics.m  : calculate QC metrics
+    step 8:  g08_qcplotlow.m  : QC plot for Z- changes
+    step 9:  g09_qcplothigh.m : QC plot for Z+ changes
+    step 10: g10_cluster.m    : geospatial clustering 
+    step 11: g11_applyhand.m  : apply HANDEM
+    step 12: g12_xv.m         : cross-validation between two tracks (stand alone)
+    step 13: g13_validate.m   : validate over known results
+                                calculate ROC curve (optional)
+ 
+  NinaLin@2023
+```
+
+
+To run the entire flow in one go, do:
+```
+>>gsba_driver(1,13,'config_gsba.txt')
+```
+
+### Output Files
+Refer to the folder and files under ```example``` directory
+|Folder|File Name|Description|
+|:---|:---|:---|
+|**out**|lumberton.tif|The Z-score map used in change detection<br /><sub>This file will be different from the input file if dolee=true in ```config_*.txt``` |
+| |lumberton_lo_const_mean_p50_bw50.tif|binary map for Z- change detection<sub><br />*const_mean*: fill method<br />*p50*: cutoff probability=0.5<br />*bw50*: min patch size in pixels</sub>|
+| |lumberton_hi_const_mean_p50_bw50.tif|binary map for Z+ change detection<sub><br />*const_mean*: fill method<br />*p50*: cutoff probability=0.5<br />*bw50*: min patch size in pixels</sub>|
+| |lumberton_const_mean_bw50.tif|binary map for both Z- and Z+ change detection<sub><br />*const_mean*: fill method<br />*bw50*: min patch size in pixels</sub>|
+| |lumberton_hand5_clstX_const_mean_bw50.tif|binary map for change detection after post-processing<sub><br />*hand5*: HANDEM threshold of 5 m<br />*clstX*: no geospatial clustering applied<br />*const_mean*: fill method<br />*bw50*: min patch size in pixels</sub>|
+| |lumberton_intp_lo_const_mean_prob.tif|probability map for Z- change detection<sub><br />*const_mean*: fill method</sub>|
+| |lumberton_intp_hi_const_mean_prob.tif|probability map for Z+ change detection<sub><br />*const_mean*: fill method</sub>|
+| |lumberton_const_mean_prob.tif|probability map for both Z- and Z+ change detection<sub><br />*const_mean*: fill method</sub>|
+|**qc**|08_qcplotlow.png<br />09_qcplothigh.png<br />10_clusterX_const_mean_bw50.pn<br />11_hand5_clstX_const_mean_bw50.png|QC plot for step 08-11|
+| |02_init.log<br />03_growlow.log<br />04_growhigh.log<br />05_interplow.log<br />06_interphigh.log<br />10_cluster.log|Log files for different steps|
+| |05_interplow.txt<br />06_interphigh.txt|Performance information for step 07-08|
+| |finalfile_const_mean_bw50.txt|Current constituting files (Z- and Z+) for the final change map (generated at step 07)|
+| |time_g02<br />time_g03<br />time_g04<br />time_g05<br />time_g06|Conputation time (in sec) for critical steps|
+|**val**|lumberton_hand5_clstX_const_mean_bw50_full.png|Validation plot for full area|
+| |lumberton_hand5_clstX_const_mean_bw50_AOI1.png<br />lumberton_hand5_clstX_const_mean_bw50_AOI2.png|Validation plot for AOI1 and AOI2<br /><sub>Set AOI1 and AOI2 in ```config*.txt```</sub>|
+| |13_val.log|Log file for step 15|
+| |val_Z_lee3_hand5_clstX_const_mean_bw50.txt|Output metrics for validation|
+
+## HSBA
+### Job Configuration
 Here is an example of the job configuration file ```config_hsba.txt``` for HSBA:
 ```matlab
 %%% Parallel setting
@@ -171,75 +240,7 @@ valaoiID=[1,2,3,3]
 valtifout=true              % output the validation tiff for each aoi, [TP,FP,TN,FN]=[1 2 -1 -2]
 ```
 
-## GSBA Job Execution Flow
-Driver file: ```gsba_driver```
-
-Launch MATLAB, and you can get the help menu direction by using ```help```:
-```
->> help gsba_driver
- function gsba_driver(startfrom,endat,fconfig,[splitid])
-  Execute GSBA (Growing Split Based Approach) for change detection
-  
-  Note: current input file should be a Z-score map
-        to change default histogram fitting setup, go to
-        SBATool/kernel/setGaussianInitials.m
- 
-  fconfig: user-specified configuration file
-  splitid: the split ID when the image is too large 
-           and is split into multiple subimages
-           for a (2x2) split, the splitid is
-            1 2
-            3 4
- 
-  step can be the following. 
-    step 1:  g01_filter       : data preparation
-    step 2:  g02_init         : initialize tile splitting and histogram fitting
-    step 3:  g03_growlow.m    : tile growing for Z- changes
-    step 4:  g04_growhigh.m   : tile growing for Z+ changes
-    step 5:  g05_interplow.m  : fill statistics for Z- changes
-    step 6:  g06_interphigh.m : fill statistics for Z+ changes
-    step 7:  g07_qcmetrics.m  : calculate QC metrics
-    step 8:  g08_qcplotlow.m  : QC plot for Z- changes
-    step 9:  g09_qcplothigh.m : QC plot for Z+ changes
-    step 10: g10_cluster.m    : geospatial clustering 
-    step 11: g11_applyhand.m  : apply HANDEM
-    step 12: g12_xv.m         : cross-validation between two tracks (stand alone)
-    step 13: g13_validate.m   : validate over known results
-                                calculate ROC curve (optional)
- 
-  NinaLin@2023
-```
-
-
-To run the entire flow in one go, do:
-```
->>gsba_driver(1,13,'config_gsba.txt')
-```
-
-### GSBA Output Files
-Refer to the folder and files under ```example``` directory
-|Folder|File Name|Description|
-|:---|:---|:---|
-|**out**|lumberton.tif|The Z-score map used in change detection<br /><sub>This file will be different from the input file if dolee=true in ```config_*.txt``` |
-| |lumberton_lo_const_mean_p50_bw50.tif|binary map for Z- change detection<sub><br />*const_mean*: fill method<br />*p50*: cutoff probability=0.5<br />*bw50*: min patch size in pixels</sub>|
-| |lumberton_hi_const_mean_p50_bw50.tif|binary map for Z+ change detection<sub><br />*const_mean*: fill method<br />*p50*: cutoff probability=0.5<br />*bw50*: min patch size in pixels</sub>|
-| |lumberton_const_mean_bw50.tif|binary map for both Z- and Z+ change detection<sub><br />*const_mean*: fill method<br />*bw50*: min patch size in pixels</sub>|
-| |lumberton_hand5_clstX_const_mean_bw50.tif|binary map for change detection after post-processing<sub><br />*hand5*: HANDEM threshold of 5 m<br />*clstX*: no geospatial clustering applied<br />*const_mean*: fill method<br />*bw50*: min patch size in pixels</sub>|
-| |lumberton_intp_lo_const_mean_prob.tif|probability map for Z- change detection<sub><br />*const_mean*: fill method</sub>|
-| |lumberton_intp_hi_const_mean_prob.tif|probability map for Z+ change detection<sub><br />*const_mean*: fill method</sub>|
-| |lumberton_const_mean_prob.tif|probability map for both Z- and Z+ change detection<sub><br />*const_mean*: fill method</sub>|
-|**qc**|08_qcplotlow.png<br />09_qcplothigh.png<br />10_clusterX_const_mean_bw50.pn<br />11_hand5_clstX_const_mean_bw50.png|QC plot for step 08-11|
-| |02_init.log<br />03_growlow.log<br />04_growhigh.log<br />05_interplow.log<br />06_interphigh.log<br />10_cluster.log|Log files for different steps|
-| |05_interplow.txt<br />06_interphigh.txt|Performance information for step 07-08|
-| |finalfile_const_mean_bw50.txt|Current constituting files (Z- and Z+) for the final change map (generated at step 07)|
-| |time_g02<br />time_g03<br />time_g04<br />time_g05<br />time_g06|Conputation time (in sec) for critical steps|
-|**val**|lumberton_hand5_clstX_const_mean_bw50_full.png|Validation plot for full area|
-| |lumberton_hand5_clstX_const_mean_bw50_AOI1.png<br />lumberton_hand5_clstX_const_mean_bw50_AOI2.png|Validation plot for AOI1 and AOI2<br /><sub>Set AOI1 and AOI2 in ```config*.txt```</sub>|
-| |13_val.log|Log file for step 15|
-| |val_Z_lee3_hand5_clstX_const_mean_bw50.txt|Output metrics for validation|
-
-
-## HSBA Job Execution Flow
+### Job Execution Flow
 Driver file: ```hsba_driver```
 
 Launch MATLAB, and you can get the help menu direction by using ```help```:
@@ -275,7 +276,7 @@ To run the entire flow in one go, do:
 >>hsba_driver(1,13,'config_hsba.txt')
 ```
 
-### HSBA Output Files
+### Output Files
 |Folder|File Name|Description|
 |:---|:---|:---|
 |**out**|lumberton.tif|The Z-score map used in change detection<br /><sub>This file will be different from the input file if dolee=true in ```config*.txt``` |
