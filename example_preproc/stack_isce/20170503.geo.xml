@@ -1,0 +1,119 @@
+<imageFile>
+    <property name="ISCE_VERSION">
+        <value>Release: 2.3, svn-2531, 20190112. Current: svn-exported.</value>
+    </property>
+    <property name="access_mode">
+        <value>read</value>
+        <doc>Image access mode.</doc>
+    </property>
+    <property name="byte_order">
+        <value>l</value>
+        <doc>Endianness of the image.</doc>
+    </property>
+    <component name="coordinate1">
+        <factorymodule>isceobj.Image</factorymodule>
+        <factoryname>createCoordinate</factoryname>
+        <doc>First coordinate of a 2D image (width).</doc>
+        <property name="delta">
+            <value>0.0001388888888888889</value>
+            <doc>Coordinate quantization.</doc>
+        </property>
+        <property name="endingvalue">
+            <value>14995.0</value>
+            <doc>Ending value of the coordinate.</doc>
+        </property>
+        <property name="family">
+            <value>imagecoordinate</value>
+            <doc>Instance family name</doc>
+        </property>
+        <property name="name">
+            <value>imagecoordinate_name</value>
+            <doc>Instance name</doc>
+        </property>
+        <property name="size">
+            <value>793</value>
+            <doc>Coordinate size.</doc>
+        </property>
+        <property name="startingvalue">
+            <value>-79.08013888888888</value>
+            <doc>Starting value of the coordinate.</doc>
+        </property>
+    </component>
+    <component name="coordinate2">
+        <factorymodule>isceobj.Image</factorymodule>
+        <factoryname>createCoordinate</factoryname>
+        <doc>Second coordinate of a 2D image (length).</doc>
+        <property name="delta">
+            <value>-0.0001388888888888889</value>
+            <doc>Coordinate quantization.</doc>
+        </property>
+        <property name="endingvalue">
+            <value>34.6</value>
+            <doc>Ending value of the coordinate.</doc>
+        </property>
+        <property name="family">
+            <value>imagecoordinate</value>
+            <doc>Instance family name</doc>
+        </property>
+        <property name="name">
+            <value>imagecoordinate_name</value>
+            <doc>Instance name</doc>
+        </property>
+        <property name="size">
+            <value>361</value>
+            <doc>Coordinate size.</doc>
+        </property>
+        <property name="startingvalue">
+            <value>34.65013888888889</value>
+            <doc>Starting value of the coordinate.</doc>
+        </property>
+    </component>
+    <property name="data_type">
+        <value>FLOAT</value>
+        <doc>Image data type.</doc>
+    </property>
+    <property name="description">
+        <value>["['Pixel-by-pixel height in meters.']"]</value>
+        <doc>Image description</doc>
+    </property>
+    <property name="extra_file_name">
+        <value>/data2/insar_processing/lumberton/s1/p77/02_stackproc_15m_pbs/merged/SLC/20170503/20170503.3rlks_1alks.flt.geo.vrt</value>
+        <doc>For example name of vrt metadata.</doc>
+    </property>
+    <property name="family">
+        <value>intimage</value>
+        <doc>Instance family name</doc>
+    </property>
+    <property name="file_name">
+        <value>/data2/insar_processing/lumberton/s1/p77/02_stackproc_15m_pbs/merged/SLC/20170503/20170503.3rlks_1alks.flt.geo</value>
+        <doc>Name of the image file.</doc>
+    </property>
+    <property name="length">
+        <value>361</value>
+        <doc>Image length</doc>
+    </property>
+    <property name="name">
+        <value>intimage_name</value>
+        <doc>Instance name</doc>
+    </property>
+    <property name="number_bands">
+        <value>1</value>
+        <doc>Number of image bands.</doc>
+    </property>
+    <property name="scheme">
+        <value>BIP</value>
+        <doc>Interleaving scheme of the image.</doc>
+    </property>
+    <property name="width">
+        <value>793</value>
+        <doc>Image width</doc>
+    </property>
+    <property name="xmax">
+        <value>14995.0</value>
+        <doc>Maximum range value</doc>
+    </property>
+    <property name="xmin">
+        <value>-79.08013888888888</value>
+        <doc>Minimum range value</doc>
+    </property>
+</imageFile>

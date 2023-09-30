@@ -1,0 +1,31 @@
+function [sx0,sx1,sy0,sy1,scx0,scx1,scy0,scy1]=splitImg(Isizes,splitsize,type)
+%function [sx0,sx1,sy0,sy1,scx0,scx1,scy0,scy1]=splitImg(Isizes,splitsize,type)
+%
+% splitsize = number of splits in x and y [splitx, splity]
+% type = grideline or gridnode 
+
+splitx = splitsize(1);
+splity = splitsize(2);
+
+incX   = ceil(Isizes(2)/splitx);
+incY   = ceil(Isizes(1)/splity);
+sx0 = 1:incX:Isizes(2);
+sx1   = [sx0(2:end)-1 Isizes(2)];
+sy0 = 1:incY:Isizes(1);
+sy1   = [sy0(2:end)-1 Isizes(1)];
+switch type
+    case 'gridline' %geotiff
+        scx0 = sx0;
+        scx1   = sx1+1;
+        scy0 = sy0;
+        scy1   = sy1+1;
+    case 'gridnode' %isce
+        scx0 = sx0;
+        scx1   = sx1;
+        scy0 = sy0;
+        scy1   = sy1;
+    otherwise
+        error('type needs to be either gridline or gridnoe')
+end
+
+end
