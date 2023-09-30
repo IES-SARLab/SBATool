@@ -172,6 +172,12 @@ To run the entire flow in one go, do:
 >>gsba_driver(1,13,'config_flood_gsba.txt')
 ```
 
+
+To validate using a different change detection result, such as the one with HANDEM applied, do:
+```
+>>g13_validate('config_flood_gsba.txt',1,'./out/lumberton_hand5_clstX_const_mean_bw50_100.tif')
+```
+
 ### Output Files
 Refer to the folder and files under ```example``` directory
 |Folder|File Name|Description|
@@ -300,6 +306,12 @@ To run the entire flow in one go, do:
 ```
 >>hsba_driver(1,13,'config_flood_hsba.txt')
 ```
+
+To validate using a different change detection result, such as the one with HANDEM applied, do:
+```
+>>g13_validate('config_flood_hsba.txt',1,'./out/lumberton_hand5_clstX_const_mean_bw50_100.tif')
+```
+
 
 ### Output Files 
 |Folder|File Name|Description|
