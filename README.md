@@ -176,23 +176,37 @@ To run the entire flow in one go, do:
 Refer to the folder and files under ```example``` directory
 |Folder|File Name|Description|
 |:---|:---|:---|
-|**out**|lumberton.tif|The Z-score map used in change detection<br /><sub>This file will be different from the input file if dolee=true in ```config_*.txt``` |
-| |lumberton_lo_const_mean_p50_bw50.tif|binary map for Z- change detection<sub><br />*const_mean*: fill method<br />*p50*: cutoff probability=0.5<br />*bw50*: min patch size in pixels</sub>|
-| |lumberton_hi_const_mean_p50_bw50.tif|binary map for Z+ change detection<sub><br />*const_mean*: fill method<br />*p50*: cutoff probability=0.5<br />*bw50*: min patch size in pixels</sub>|
-| |lumberton_const_mean_bw50.tif|binary map for both Z- and Z+ change detection<sub><br />*const_mean*: fill method<br />*bw50*: min patch size in pixels</sub>|
-| |lumberton_hand5_clstX_const_mean_bw50.tif|binary map for change detection after post-processing<sub><br />*hand5*: HANDEM threshold of 5 m<br />*clstX*: no geospatial clustering applied<br />*const_mean*: fill method<br />*bw50*: min patch size in pixels</sub>|
-| |lumberton_intp_lo_const_mean_prob.tif|probability map for Z- change detection<sub><br />*const_mean*: fill method</sub>|
-| |lumberton_intp_hi_const_mean_prob.tif|probability map for Z+ change detection<sub><br />*const_mean*: fill method</sub>|
-| |lumberton_const_mean_prob.tif|probability map for both Z- and Z+ change detection<sub><br />*const_mean*: fill method</sub>|
-|**qc**|08_qcplotlow.png<br />09_qcplothigh.png<br />10_clusterX_const_mean_bw50.pn<br />11_hand5_clstX_const_mean_bw50.png|QC plot for step 08-11|
-| |02_init.log<br />03_growlow.log<br />04_growhigh.log<br />05_interplow.log<br />06_interphigh.log<br />10_cluster.log|Log files for different steps|
-| |05_interplow.txt<br />06_interphigh.txt|Performance information for step 07-08|
-| |finalfile_const_mean_bw50.txt|Current constituting files (Z- and Z+) for the final change map (generated at step 07)|
-| |time_g02<br />time_g03<br />time_g04<br />time_g05<br />time_g06|Conputation time (in sec) for critical steps|
-|**val**|lumberton_hand5_clstX_const_mean_bw50_full.png|Validation plot for full area|
-| |lumberton_hand5_clstX_const_mean_bw50_AOI1.png<br />lumberton_hand5_clstX_const_mean_bw50_AOI2.png|Validation plot for AOI1 and AOI2<br /><sub>Set AOI1 and AOI2 in ```config*.txt```</sub>|
-| |13_val.log|Log file for step 15|
-| |val_Z_lee3_hand5_clstX_const_mean_bw50.txt|Output metrics for validation|
+|**out**|lumberton.tif<br />(full resolution)|The Z-score map used in change detection<br /><sub>This file will be different from the input file if dolee=true in ```config*.txt``` |
+| |lumberton_intp_lo_const_mean_p50_bw50.tif<br />(full resolution)|binary map for Z- change detection<sub><br />*const_mean*: fill method<br />*p50*: cutoff probability=0.5<br />*bw50*: min patch size in pixels</sub>|
+| |lumberton_intp_hi_const_mean_p50_bw100.tif<br />(full resolution)|binary map for Z+ change detection<sub><br />*const_mean*: fill method<br />*p50*: cutoff probability=0.5<br />*bw100*: min patch size in pixels</sub>|
+| |lumberton_intp_lo_const_mean_prob.tif<br />(full resolution)|probability map for Z- change detection<sub><br />*const_mean*: fill method</sub>|
+| |lumberton_intp_hi_const_mean_prob.tif<br />(full resolution)|probability map for Z+ change detection<sub><br />*const_mean*: fill method</sub>|
+| |lumberton_clstX_const_mean_bw50_100.tif<br />full resolution)|binary map for both Z- and Z+ change detection<sub><br />*clstX*: no geospatial clustering<br />*const_mean*: fill method<br />*bw50*: min patch size in pixels for Z- changes<br />*100*: min patch size in pixels for Z+ changes</sub>|
+| |lumberton_clstX_const_mean_prob.tif<br />(full resolution)|probability map for both Z- and Z+ change detection<sub><br />*const_mean*: fill method</sub>|
+| |lumberton_hand5_clstX_const_mean_bw50_100.tif<br />(full resolution)|binary map for change detection after post-processing<sub><br />*hand5*: HANDEM threshold of 5 m<br />*clstX*: no geospatial clustering applied<br />*const_mean*: fill method<br />*bw50*: min patch size in pixels for Z- changes<br />*100*: min patch size in pixels for Z+ changes</sub>|
+|**qc**|06_qcplothsba.png|QC plot for step 6|
+| |02_hsba.log<br />03_hsba.log<br />04_hsbaplow.log<br />05_hsbaphigh.log<br />10_cluster.log|Log files for different steps|
+| |04_hsbaplow.txt<br />05_hsbaphigh.txt|Performance information for step 04-05|
+| |time_h02<br />time_h03<br />time_h04<br />time_h05|Runtime information for individual steps|
+| |finalfile_const_mean_bw50_100.txt|Current constituting probability files (Z- and Z+) for the final change map (generated at step 06)|
+| |lumberton_hsba_G1.mat|MATLAB file to store parameters estimated at step 02|
+| |lumberton_hsba_G3.mat|MATLAB file to store parameters estimated at step 03|
+| |lumberton_intp_lo_const_mean.mat|MATLAB file to store parameters estimated at step 04|
+| |lumberton_intp_hi_const_mean.mat|MATLAB file to store parameters estimated at step 05|
+| |06_qcplothsba.png|QC plot at step 06|
+| |10_clusterX_const_mean_bw50_100.png|QC plot at step 10|
+| |11_hand5_clstX_const_mean_bw50_100.png|QC plot at step 11|
+| |lumberton_intp_lo_const_mean_G1M.tif (full resolution)|mean for the 1st Gaussian|
+| |lumberton_intp_lo_const_mean_G1S.tif (full resolution)|std for the 1st Gaussian|
+| |lumberton_intp_hi_const_mean_G3M.tif (full resolution)|mean for the 3rd Gaussian|
+| |lumberton_intp_hi_const_mean_G3S.tif (full resolution)|std for the 3rd Gaussian|
+|**val**|13_val.log|Log file for step 13|
+| |lumberton_val_full.tif  (full resolution)|Validation plot for full area|
+| |lumberton_val_aoi1.tif<br />lumberton_val_aoi2.png<br />lumberton_val_aoi3.png|Validation plot for AOIs<br /><sub>Set AOIs in ```config*.txt```</sub>|
+| |val_lumberton_clstX_const_mean_bw50_100_full.png|QC plot for validation of full area|
+| |val_lumberton_clstX_const_mean_bw50_100_AOI1.png<br />val_lumberton_clstX_const_mean_bw50_100_AOI2.png<br />val_lumberton_clstX_const_mean_bw50_100_AOI3.png|QC plot for validation of AOIs|
+| |roc_lumberton_clstX_const_mean_bw50_100.mat|MATLAB file to store parameters about ROC cuves|
+| |roc_lumberton_clstX_const_mean_bw50_100.png|QC plot of ROC cuves|
 
 ## HSBA
 ### Job Configuration
