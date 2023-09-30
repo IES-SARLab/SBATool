@@ -197,9 +197,9 @@ Refer to the folder and files under ```example``` directory
 | |08_qcplotlow.png<br />09_qcplothigh.png<br />10_clusterX_const_mean_bw10_10.png<br />11_hand5_clstX_const_mean_bw10_10.png|QC plot for step 08<br />QC plot for step 09<br />QC plot for step 10<br />QC plot for step 11|
 | |lumberton_intp_lo50_const_mean_G1M.tif<br />lumberton_intp_lo50_const_mean_G1S.tif<br />lumberton_intp_hi50_const_mean_G3M.tif<br />lumberton_intp_hi50_const_mean_G3S.tif<br />(full resolution)|mean for the 1st Gaussian<br />std for the 1st Gaussian<br />mean for the 3rd Gaussian<br />std for the 3rd Gaussian|
 |**val**|13_val.log|Log file for step 13|
-| |lumberton_val_full.tif<br />lumberton_val_aoi1.tif<br />lumberton_val_aoi2.tif<br />lumberton_val_aoi3.tif|Validation files for full area and AOIs<br /><sub>Set AOIs in ```config*.txt```</sub>|
-| |val_lumberton_clstX_const_mean_bw50_100_full.png<br />val_lumberton_clstX_const_mean_bw50_100_AOI1.png<br />roc_lumberton_clstX_const_mean_bw50_100.png|QC plot for validation of full area<br />QC plot for validation of AOIs<br />QC plot of ROC cuves|
-| |roc_lumberton_clstX_const_mean_bw50_100.mat|MATLAB file to store parameters about ROC cuves|
+| |lumberton_val_full.tif<br />lumberton_val_aoi1.tif<br />lumberton_val_aoi2.tif<br />lumberton_val_aoi3.tif|Output validation files for full area and AOIs<br /><sub>Set AOIs in ```config*.txt```<br />These files are saved if valtifout=true in ```config*.txt```</sub>|
+| |val_lumberton_clstX_const_mean_bw10_10_full.png<br />val_lumberton_clstX_const_mean_bw10_10_AOI1.png<br />roc_lumberton_clstX_const_mean_bw10_10.png|QC plot for validation of full area<br />QC plot for validation of AOIs<br />QC plot of ROC cuves|
+| |roc_lumberton_clstX_const_mean_bw10_10.mat|MATLAB file to store parameters about ROC cuves|
 
 
 ## HSBA
@@ -309,29 +309,17 @@ To validate using a different change detection result, such as the one with HAND
 | |lumberton_intp_hi_const_mean_p50_bw100.tif<br />(full resolution)|binary map for Z+ change detection<sub><br />*const_mean*: fill method<br />*p50*: cutoff probability=0.5<br />*bw100*: min patch size in pixels</sub>|
 | |lumberton_intp_lo_const_mean_prob.tif<br />(full resolution)|probability map for Z- change detection<sub><br />*const_mean*: fill method</sub>|
 | |lumberton_intp_hi_const_mean_prob.tif<br />(full resolution)|probability map for Z+ change detection<sub><br />*const_mean*: fill method</sub>|
-| |lumberton_clstX_const_mean_bw50_100.tif<br />full resolution)|binary map for both Z- and Z+ change detection<sub><br />*clstX*: no geospatial clustering<br />*const_mean*: fill method<br />*bw50*: min patch size in pixels for Z- changes<br />*100*: min patch size in pixels for Z+ changes</sub>|
+| |lumberton_clstX_const_mean_bw50_100.tif<br />(full resolution)|binary map for both Z- and Z+ change detection<sub><br />*clstX*: no geospatial clustering<br />*const_mean*: fill method<br />*bw50*: min patch size in pixels for Z- changes<br />*100*: min patch size in pixels for Z+ changes</sub>|
 | |lumberton_clstX_const_mean_prob.tif<br />(full resolution)|probability map for both Z- and Z+ change detection<sub><br />*const_mean*: fill method</sub>|
 | |lumberton_hand5_clstX_const_mean_bw50_100.tif<br />(full resolution)|binary map for change detection after post-processing<sub><br />*hand5*: HANDEM threshold of 5 m<br />*clstX*: no geospatial clustering applied<br />*const_mean*: fill method<br />*bw50*: min patch size in pixels for Z- changes<br />*100*: min patch size in pixels for Z+ changes</sub>|
-|**qc**|06_qcplothsba.png|QC plot for step 6|
-| |02_hsba.log<br />03_hsba.log<br />04_hsbaplow.log<br />05_hsbaphigh.log<br />10_cluster.log|Log files for different steps|
-| |04_hsbaplow.txt<br />05_hsbaphigh.txt|Performance information for step 04-05|
+|**qc**|02_hsba.log<br />03_hsba.log<br />04_hsbaplow.log<br />05_hsbaphigh.log<br />10_cluster.log|Log files for different steps|
+| |04_hsbaplow.txt<br />05_hsbaphigh.txt<br />finalfile_const_mean_bw50_100.txt|Performance information for step 04<br />Performance information for step 05<br />Current constituting probability files (Z- and Z+) for the final change map (generated at step 06)|
 | |time_h02<br />time_h03<br />time_h04<br />time_h05|Runtime information for individual steps|
-| |finalfile_const_mean_bw50_100.txt|Current constituting probability files (Z- and Z+) for the final change map (generated at step 06)|
-| |lumberton_hsba_G1.mat|MATLAB file to store parameters estimated at step 02|
-| |lumberton_hsba_G3.mat|MATLAB file to store parameters estimated at step 03|
-| |lumberton_intp_lo_const_mean.mat|MATLAB file to store parameters estimated at step 04|
-| |lumberton_intp_hi_const_mean.mat|MATLAB file to store parameters estimated at step 05|
-| |06_qcplothsba.png|QC plot at step 06|
-| |10_clusterX_const_mean_bw50_100.png|QC plot at step 10|
-| |11_hand5_clstX_const_mean_bw50_100.png|QC plot at step 11|
-| |lumberton_intp_lo_const_mean_G1M.tif (full resolution)|mean for the 1st Gaussian|
-| |lumberton_intp_lo_const_mean_G1S.tif (full resolution)|std for the 1st Gaussian|
-| |lumberton_intp_hi_const_mean_G3M.tif (full resolution)|mean for the 3rd Gaussian|
-| |lumberton_intp_hi_const_mean_G3S.tif (full resolution)|std for the 3rd Gaussian|
+| |lumberton_hsba_G1.mat<br />lumberton_hsba_G3.mat<br />lumberton_intp_lo_const_mean.mat<br />lumberton_intp_hi_const_mean.mat|MATLAB file to store parameters estimated at step 02<br />MATLAB file to store parameters estimated at step 03<br />MATLAB file to store parameters estimated at step 04<br />MATLAB file to store parameters estimated at step 05|
+| |06_qcplothsba.png<br />10_clusterX_const_mean_bw50_100.png<br />11_hand5_clstX_const_mean_bw50_100.png|QC plot at step 06<br />QC plot at step 10<br />QC plot at step 11|
+| |lumberton_intp_lo_const_mean_G1M.tif<br />lumberton_intp_lo_const_mean_G1S.tif<br />lumberton_intp_hi_const_mean_G3M.tif<br />lumberton_intp_hi_const_mean_G3S.tif<br />(full resolution)|mean for the 1st Gaussian<br />std for the 1st Gaussian<br />mean for the 3rd Gaussian<br />std for the 3rd Gaussian|
 |**val**|13_val.log|Log file for step 13|
-| |lumberton_val_full.tif  (full resolution)|Validation plot for full area|
-| |lumberton_val_aoi1.tif<br />lumberton_val_aoi2.png<br />lumberton_val_aoi3.png|Validation plot for AOIs<br /><sub>Set AOIs in ```config*.txt```</sub>|
-| |val_lumberton_clstX_const_mean_bw50_100_full.png|QC plot for validation of full area|
-| |val_lumberton_clstX_const_mean_bw50_100_AOI1.png<br />val_lumberton_clstX_const_mean_bw50_100_AOI2.png<br />val_lumberton_clstX_const_mean_bw50_100_AOI3.png|QC plot for validation of AOIs|
+| |lumberton_val_full.tif<br />lumberton_val_aoi1.tif<br />lumberton_val_aoi2.tif<br />lumberton_val_aoi3.tif|Output validation files for full area and AOIs<br /><sub>Set AOIs in ```config*.txt```<br />These files are saved if valtifout=true in ```config*.txt```</sub>|
+| |val_lumberton_clstX_const_mean_bw50_100_full.png<br />val_lumberton_clstX_const_mean_bw50_100_AOI1.png<br />roc_lumberton_clstX_const_mean_bw50_100.png|QC plot for validation of full area<br />QC plot for validation of AOIs<br />QC plot of ROC cuves|
 | |roc_lumberton_clstX_const_mean_bw50_100.mat|MATLAB file to store parameters about ROC cuves|
-| |roc_lumberton_clstX_const_mean_bw50_100.png|QC plot of ROC cuves|
+
