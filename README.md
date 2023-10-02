@@ -12,8 +12,7 @@ It is recommended that you run SBATool in MATLAB 2019b or later versions.
 Add subfolder ```main``` and ```kernel``` to MATLAB path by
 
 ```matlab
-addpath('{SBATool folder}/main')  %{SBATool folder} is the path to SBATool
-addpath('{SBATool folder}/kernel')
+addpath(genpath('{SBATool folder}'))  %{SBATool folder} is the path to SBATool
 ```
 
 You will also need to install the following MATLAB Toobox:
