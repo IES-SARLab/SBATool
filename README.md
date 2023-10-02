@@ -15,7 +15,7 @@ Add subfolder ```main``` and ```kernel``` to MATLAB path by
 addpath(genpath('{SBATool folder}'))  %{SBATool folder} is the path to SBATool
 ```
 
-You will also need to install the following MATLAB Toobox:
+You will also need to install the following MATLAB Toolbox:
 
 ```Deep Learning Toolbox```
 
