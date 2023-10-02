@@ -46,7 +46,6 @@ handthresh=[5 nan]          % [m] [nan 20] means to keep values with handem>20
                             %     [10  20] means to keep values in between
 
 %%% validation (g12-g13)
-liathresh=80                  % [deg] max local incidence angle (above which the validation will be masked out)
 %AOIs are separated by ";", and the format is lon1 lat1 lon2 lat2 for UL and LR corner coordinates
 valaoi=[-79.0751011 34.650042 -78.974849 34.599916; -79.029483 34.619153 -79.014066 34.601942; -79.0223 34.6230 -79.0147 34.6148; -79.0064 34.6278 -78.9996 34.6197]
 valaoiID=[1,2,3,3]
