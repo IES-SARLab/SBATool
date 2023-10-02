@@ -34,17 +34,6 @@ pcutlow=0.5                % [0-1] cut-off probability for changes w. Z-
 pcuthigh=0.5               % [0-1] cut-off probability for changes w. Z+
 minpatchlow=640            % [m^2] min area for the changed patch w. Z-
 minpatchhigh=640           % [m^2] min area for the changed patch w. Z+
-%lookpF=1;                 % look number for Bayesian probably (for display purpose)
-%lookRk=1;                 % look number on binary change map over whick ripley coeff will be estimated
-
-%%% fill statistics (g05-g06)
-Rkfinallow=med             % choose the change map of Z- with the Rk level (low, med, high), default: med
-Rkfinalhigh=med            % choose the change map of Z+ with the Rk level (low, med, high), default: med
-
-%%% qc plots (g07-g09)
-qlow=.05                   % the lower Rk quantile for selected plotting
-qmid=.50                   % the mid Rk quantile for selected plotting
-qhigh=.95                  % the higher Rk qunatile for selected plotting
 
 %%% geospatial processing (g10-g11 suggested for landslide) 
 docluster=false             % run geospatial clustering (g12)
