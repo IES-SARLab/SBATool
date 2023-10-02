@@ -44,7 +44,7 @@ ylabel('Intensity Decrease');
 title('(a) HSBA Stats','FontSize',7);
 cb = colorbar('h');
 set(cb,'Position',[0.10,0.52,0.15,0.015])
-title(cb,{'Mean of the','1st Gaussian'},'Position',[105 -13 0]);
+title(cb,{'Mean of the','1st Gaussian'},'Position',[120 -13 0]);
 
 cnt = (ii-1)*3+2;
 p(cnt)=tight_subplot(2,3,cnt,'gap',gap,'marg_h',marg_h,'marg_w',marg_w);
@@ -54,7 +54,7 @@ set(gca,'XTick',[],'YTick',[])
 title('(b) Bayesian Prob','FontSize',7); 
 cb2 = colorbar('h');
 set(cb2,'Position',[0.45,0.52,0.1,0.015])
-title(cb2,'Probability','Position',[75 -1.3 0]);
+title(cb2,'Probability','Position',[85 -1.3 0]);
 
 cnt = (ii-1)*3+3;
 p(cnt)=tight_subplot(2,3,cnt,'gap',gap,'marg_h',marg_h,'marg_w',marg_w);
@@ -80,7 +80,7 @@ set(gca,'XTick',[],'YTick',[])
 ylabel('Intensity Increase');
 cb = colorbar('h');
 set(cb,'Position',[0.10,0.05,0.15,0.015])
-title(cb,{'Mean of the','3st Gaussian'},'Position',[105 -12 0]);
+title(cb,{'Mean of the','3st Gaussian'},'Position',[120 -12 0]);
 
 cnt = (ii-1)*3+2;
 p(cnt)=tight_subplot(2,3,cnt,'gap',gap,'marg_h',marg_h,'marg_w',marg_w);
@@ -89,7 +89,7 @@ colormap(gca,cmap2);
 set(gca,'XTick',[],'YTick',[])
 cb2 = colorbar('h');
 set(cb2,'Position',[0.45,0.05,0.1,0.015])
-title(cb2,'Probability','Position',[75 -1.6 0]);
+title(cb2,'Probability','Position',[85 -1.6 0]);
 
 cnt = (ii-1)*3+3;
 p(cnt)=tight_subplot(2,3,cnt,'gap',gap,'marg_h',marg_h,'marg_w',marg_w);

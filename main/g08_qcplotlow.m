@@ -47,7 +47,7 @@ for ii = 1:numel(tlistlow)
         %set(cb,'Position',[0.22,0.035,0.4,0.015])
         %title(cb,'Mean of the 1st Gaussian','Position',[295 -2 0]);
         set(cb,'Position',[0.25,0.08,0.15,0.015])
-        title(cb,{'Mean of the','1st Gaussian'},'Position',[125 -10 0]);
+        title(cb,{'Mean of the','1st Gaussian'},'Position',[140 -10 0]);
     end
     
 
@@ -75,7 +75,7 @@ for ii = 1:numel(tlistlow)
         title('(d) Bayesian Prob','FontSize',7); 
         cb2 = colorbar('h');
         set(cb2,'Position',[0.62,0.08,0.1,0.015])
-        title(cb2,'Probability','Position',[85 -2 0]);
+        title(cb2,'Probability','Position',[95 -2 0]);
     end
 
     cnt = (ii-1)*5+5;

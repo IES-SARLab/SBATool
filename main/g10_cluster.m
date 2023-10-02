@@ -75,22 +75,32 @@ if ~docluster
 
     figure('rend','painters','pos',[100 100 1200 400]); 
     gap = [.02 .05];
-    marg_h = [.08 .08];
+    marg_h = [.15 .08];
     marg_w = [.08 .05];
 
     tight_subplot(1,3,1,'gap',gap,'marg_h',marg_h,'marg_w',marg_w);
     imagesc(I,[-5 5]);
-    colormap(gca,blue2red(32))
+    colormap(gca,blue2red(32));
+    cb1=colorbar('h');
+    set(cb1,'Position',[0.15,0.05,0.1,0.015])    
     title('Z-score')
 
     tight_subplot(1,3,2,'gap',gap,'marg_h',marg_h,'marg_w',marg_w);
     imagesc(pboth/100,[0 1]);
-    colormap(gca,'parula')
+    colormap(gca,'parula');
+    cb2=colorbar('h');
+    set(cb2,'Position',[0.465,0.05,0.1,0.015])   
     title('Probability')
 
     tight_subplot(1,3,3,'gap',gap,'marg_h',marg_h,'marg_w',marg_w);
+    cb3 = [0 0 0;0 0 1;1 0 0];
     imagesc(FPMboth,'AlphaData',(FPMboth~=0));
-    colormap(gca,'jet')
+    colormap(gca,cb3)
+    hold on;
+    fh1=fill([0 0 0 0],[0 0 0 0],[1 1 1]);
+    fh2=fill([0 0 0 0],[0 0 0 0],[0 0 1]);
+    fh3=fill([0 0 0 0],[0 0 0 0],[1 0 0]);
+    legend([fh1,fh2,fh3],'No Change','Change (Z-)','Change (Z+)')
     title('Non-clustered')
 
     if savefile

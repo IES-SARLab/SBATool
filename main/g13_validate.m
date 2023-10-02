@@ -221,6 +221,11 @@ function plotVal(fpmLK,valLK,valoutLK,pltfile,aoilabel)
     tight_subplot(1,3,1,'gap',gap,'marg_h',marg_h,'marg_w',marg_w);
     imagesc(fpmLK,'AlphaData',((fpmLK~=0)&(isfinite(fpmLK))));
     colormap(gca,[0 0 0;0 0 1;1 0 0]);
+    hold on;
+    fh1=fill([0 0 0 0],[0 0 0 0],[1 1 1]);
+    fh2=fill([0 0 0 0],[0 0 0 0],[0 0 1]);
+    fh3=fill([0 0 0 0],[0 0 0 0],[1 0 0]);
+    legend([fh1,fh2,fh3],'No Change','Change (Z-)','Change (Z+)')
     title('GSBA Result')
     
     tight_subplot(1,3,2,'gap',gap,'marg_h',marg_h,'marg_w',marg_w);
@@ -228,16 +233,26 @@ function plotVal(fpmLK,valLK,valoutLK,pltfile,aoilabel)
     colormap(gca,[0 0 0;cm(1,:)]);
     title('Validation In')
     set(gca,'YTickLabel',[])
+    hold on;
+    fh1=fill([0 0 0 0],[0 0 0 0],[1 1 1]);
+    fh2=fill([0 0 0 0],[0 0 0 0],cm(1,:));
+    legend([fh1,fh2],'No Change','Change')
     
     tight_subplot(1,3,3,'gap',gap,'marg_h',marg_h,'marg_w',marg_w);
     valoutLK(valoutLK<0) = valoutLK(valoutLK<0)*-1+2;
     valoutLK(isnan(valoutLK))=0;
     valoutLK(1,1)=0;
     imagesc(valoutLK,'AlphaData',(isfinite(fpmLK)&isfinite(valLK)));
+    hold on;
     colormap(gca,[0 0 0;cm]);
     title('Validation Out')
-    set(gca,'YTickLabel',[])
-   
+    set(gca,'YTickLabel',[])    
+    fh1=fill([0 0 0 0],[0 0 0 0],cm(1,:));
+    fh2=fill([0 0 0 0],[0 0 0 0],cm(2,:));
+    fh3=fill([0 0 0 0],[0 0 0 0],cm(3,:));
+    fh4=fill([0 0 0 0],[0 0 0 0],cm(4,:));
+    legend([fh1,fh2,fh3,fh4],'TP','FP','TN','FN')
+
     [fpath,fname,fext] = fileparts(pltfile);
     pltfileAOI = sprintf('%s/%s_%s%s',fpath,fname,aoilabel,fext);
  

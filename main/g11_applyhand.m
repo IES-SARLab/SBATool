@@ -102,10 +102,11 @@ for ii=1:numel(fpmfilelist)
     gap = [.02 .05];
     marg_h = [.08 .08];
     marg_w = [.08 .05];
+    cm = [0 0 0;0 0 1;1 0 0];
 
     tight_subplot(1,2,1,'gap',gap,'marg_h',marg_h,'marg_w',marg_w);
     imagesc(patch1LK,'AlphaData',(patch1LK~=0));
-    colormap(gca,'jet');
+    colormap(gca,cm);
     if mod(ii,3)==1
         title('Nonclustered, Before HANDEM')
     elseif mod(ii,3)==2
@@ -116,7 +117,7 @@ for ii=1:numel(fpmfilelist)
 
     tight_subplot(1,2,2,'gap',gap,'marg_h',marg_h,'marg_w',marg_w);
     imagesc(patch1r1LK,'AlphaData',(patch1r1LK~=0));
-    colormap(gca,'jet');
+    colormap(gca,cm);
     if mod(ii,3)==1
         title('Nonclustered, After HANDEM')
     elseif mod(ii,3)==2
@@ -125,6 +126,11 @@ for ii=1:numel(fpmfilelist)
         title('Large Cluster, After HANDEM')
     end
     set(gca,'YTickLabel',[])
+    hold on;
+    fh1=fill([0 0 0 0],[0 0 0 0],[1 1 1]);
+    fh2=fill([0 0 0 0],[0 0 0 0],[0 0 1]);
+    fh3=fill([0 0 0 0],[0 0 0 0],[1 0 0]);
+    legend([fh1,fh2,fh3],'No Change','Change (Z-)','Change (Z+)')
 
     print(gcf, qcfigname, '-dpng', '-r300');
 end
