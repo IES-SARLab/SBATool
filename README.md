@@ -16,6 +16,10 @@ addpath('{SBATool folder}/main')  %{SBATool folder} is the path to SBATool
 addpath('{SBATool folder}/kernel')
 ```
 
+You will also need to install the following MATLAB Toobox:
+
+```Deep Learning Toolbox```
+
 ## Input Data Files
 An example of the input files are shown in the ```example``` folder
 |File Name|Description|Required/Optional|
