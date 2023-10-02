@@ -4,12 +4,16 @@ This tool contains two algorithms:
 1. ```GSBA```: Growing Split-Based Approach. Parallel computation is supported.
 2. ```HSBA```: Hierarchical Split-Based Approach. 
 
-**Note: This work is currently under review. All source codes will be available after the review process is complete.**
+For detailed information about **HSBA**, refer to:
+
+Chini, M., Hostache, R., Giustarini, L., & Matgen, P. (2017). A hierarchical split-based approach for parametric thresholding of SAR images: Flood inundation as a test case. Ieee Transactions On Geoscience and Remote Sensing, 55(12), 6975-6988. https://doi.org/10.1109/TGRS.2017.2737664
+
+Detailed information about **GSBA** is still under review (as of 2 Oct 2023).
 
 ## Environment Preparation
-It is recommended that you run SBATool in MATLAB 2019b or later versions.
+It is recommended that you run SBATool in MATLAB 2019b or later versions. **Note:** Errors may appear if you run in MATLAB 2023 or later versions.
 
-Add subfolder ```main``` and ```kernel``` to MATLAB path by
+Add SBATool to MATLAB path by doing:
 
 ```matlab
 addpath(genpath('{SBATool folder}'))  %{SBATool folder} is the path to SBATool
@@ -20,7 +24,7 @@ You will also need to install the following MATLAB Toolbox:
 ```Deep Learning Toolbox```
 
 ## Input Data Files
-An example of the input files are shown in the ```example``` folder
+An example of the input files are shown in the ```example``` folder:
 |File Name|Description|Required/Optional|
 |:---|:---|:---|
 |lumberton.tif|Z-score map|Required|
@@ -29,7 +33,7 @@ An example of the input files are shown in the ```example``` folder
 |lumberton_lia.tif|Local incidence angles (LIA) in degrees|Optional|
 |lumberton_val.tif|Validation data<br />0=no change<br />1=change|Optional|
 
-All input files need to share the same prefix. The suffix can be **.tif** (recommended), **.img** or **any isce suffix**.
+All input files need to share **the same prefix**. The suffix can be **.tif** (recommended), **.img** or **any isce suffix**.
 
 If any of the optional files is not present in the folder, the corresponding step (masking/hand masking/lia masking/validation) will be omitted.
 
@@ -46,6 +50,7 @@ For information about **LIA**, refer to:
 Shibayama, T., Yamaguchi, Y., & Yamada, H. (2015). Polarimetric Scattering Properties of Landslides in Forested Areas and the Dependence on the Local Incidence Angle. Remote Sensing, 7(11). https://doi.org/10.3390/rs71115424 
 
 ## Input Config Files
+Example of the config files are shown in the ```config``` folder:
 |File Name|Description|Required/Optional|
 |:---|:---|:---|
 |config_flood_gsba.txt|Job configuration file for GSBA|Required|
@@ -60,7 +65,7 @@ The same applies to the ```hsba``` example.
 
 ## GSBA
 ### Job Configuration
-Here is an example of the job configuration file ```config_gsba.txt``` for GSBA:
+Here is an example of the job configuration file ```config_flood_gsba.txt``` for GSBA:
 ```matlab
 %%% Parallel setting
 npool=12                 % set number of workers for parallel processing
@@ -88,28 +93,16 @@ threshG3=[1.9 .980 .05 0.05  2.5 0.4];  % for flood
 %threshG =[.80 -5      -1      1       5]  % for single mode
 
 %%% tile growing (g03-g04)
-%useG2=true                 % use statistics from 2nd Gaussian. If false, u
-se mean=0 and std=1 (true)
+%useG2=true                 % use statistics from 2nd Gaussian. If false, use mean=0 and std=1 (true)
 nthresh=1                   % [>=1] min number of connected tiles needed
 methodlow=const_mean        % fill method (wmean, mean, quantile, const_max, const_mean, const_med, const_q, invdist)
 methodhigh=const_mean       % fill method (wmean, mean, quantile, const_max, const_mean, const_med, const_q, invdist)
 methodlowq=0.5             % [0-1] supply this value when methodlow=quantile
 methodhighq=0.5            % [0-1] supply this value when methodhigh=quantile
-pcutlow=0.5                % [0-1] cut-off probability for changes w. Z-
-pcuthigh=0.5               % [0-1] cut-off probability for changes w. Z+
-minpatchlow=640            % [m^2] min area for the changed patch w. Z-
-minpatchhigh=640           % [m^2] min area for the changed patch w. Z+
-%lookpF=1;                 % look number for Bayesian probably (for display purpose)
-%lookRk=1;                 % look number on binary change map over whick ripley coeff will be estimated
-
-%%% fill statistics (g05-g06)
-Rkfinallow=med             % choose the change map of Z- with the Rk level (low, med, high), default: med
-Rkfinalhigh=med            % choose the change map of Z+ with the Rk level (low, med, high), default: med
-
-%%% qc plots (g07-g09)
-qlow=.05                   % the lower Rk quantile for selected plotting
-qmid=.50                   % the mid Rk quantile for selected plotting
-qhigh=.95                  % the higher Rk qunatile for selected plotting
+pcutlow=0.5                % [0-1] cut-off probability for changes with Z-
+pcuthigh=0.5               % [0-1] cut-off probability for changes with Z+
+minpatchlow=640            % [m^2] min area for the changed patch with Z-
+minpatchhigh=640           % [m^2] min area for the changed patch with Z+
 
 %%% geospatial processing (g10-g11 suggested for landslide) 
 docluster=false             % run geospatial clustering (g12)
@@ -122,7 +115,6 @@ handthresh=[5 nan]         % [m] [nan 20] means to keep values with handem>20
                             %     [10  20] means to keep values in between
 
 %%% validation (g12-g13)
-liathresh=80                  % [deg] max local incidence angle (above which the validation will be masked out)
 %AOIs are separated by ";", and the format is lon1 lat1 lon2 lat2 for UL and LR corner coordinates
 valaoi=[-79.0751011 34.650042 -78.974849 34.599916; -79.029483 34.619153 -79.014066 34.601942; -79.0223 34.6230 -79.0147 34.6148; -79.0064 34.6278 -78.9996 34.6197]
 valaoiID=[1,2,3,3]
@@ -207,7 +199,7 @@ Refer to the folder and files under ```example``` directory
 
 ## HSBA
 ### Job Configuration
-Here is an example of the job configuration file ```config_hsba.txt``` for HSBA:
+Here is an example of the job configuration file ```config_flood_hsba.txt``` for HSBA:
 ```matlab
 %%% Parallel setting
 npool=12                 % set number of workers for parallel processing
@@ -236,12 +228,10 @@ methodlow=const_mean       % fill method (wmean, mean, quantile, const_max, cons
 methodhigh=const_mean      % fill method (wmean, mean, quantile, const_max, const_mean, const_med, const_q, invdist)
 methodlowq=0.5             % [0-1] supply this value when methodlow=quantile
 methodhighq=0.5            % [0-1] supply this value when methodhigh=quantile
-pcutlow=0.5                % [0-1] cut-off probability for changes w. Z-
-pcuthigh=0.5               % [0-1] cut-off probability for changes w. Z+
-minpatchlow=3200           % [m^2] min area for the changed patch w. Z-
-minpatchhigh=6400          % [m^2] min area for the changed patch w. Z+
-%lookpF=1;                 % look number for Bayesian probably (for display purpose)
-%lookRk=1;                 % look number on binary change map over whick ripley coeff will be estimated
+pcutlow=0.5                % [0-1] cut-off probability for changes with Z-
+pcuthigh=0.5               % [0-1] cut-off probability for changes with Z+
+minpatchlow=3200           % [m^2] min area for the changed patch with Z-
+minpatchhigh=6400          % [m^2] min area for the changed patch with Z+
 
 %%% geospatial processing (g10-g11 suggested for landslide) 
 docluster=false             % run geospatial clustering (g12)
@@ -254,7 +244,6 @@ handthresh=[5 nan]          % [m] [nan 20] means to keep values with handem>20
                             %     [10  20] means to keep values in between
 
 %%% validation (g12-g13)
-liathresh=80                  % [deg] max local incidence angle (above which the validation will be masked out)
 %AOIs are separated by ";", and the format is lon1 lat1 lon2 lat2 for UL and LR corner coordinates
 valaoi=[-79.0751011 34.650042 -78.974849 34.599916; -79.029483 34.619153 -79.014066 34.601942; -79.0223 34.6230 -79.0147 34.6148; -79.0064 34.6278 -78.9996 34.6197]
 valaoiID=[1,2,3,3]
