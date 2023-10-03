@@ -1,4 +1,12 @@
-# GSBA
+# GSBA (Growing Split-Based Approach)
+
+## Content
+1. [Job Configuration](#job-configuration)
+2. [Job Execution Flow](#job-execution-flow)
+3. [Output Files](#output-files)
+
+------
+
 ## Job Configuration
 Here is an example of the job configuration file ```config_flood_gsba.txt``` for GSBA:
 ```matlab
