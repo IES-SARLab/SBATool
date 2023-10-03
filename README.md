@@ -40,7 +40,7 @@ An example of the input files are shown in the ```example``` folder:
 |lumberton_mask.tif|Layover and shadow mask<br />0=non-masked<br />other values=masekd|Optional|
 |lumberton_hand.tif|HANDEM values in meters|Optional|
 |lumberton_lia.tif|Local incidence angles (LIA) in degrees|Optional|
-|lumberton_val.tif|Validation data<br />0=no change<br />1=change|Optional|
+|lumberton_val.tif|Validation data<br />0=no change<br />1=change<br />This dataset is available only upon request|Optional|
 
 All input files need to share **the same prefix**. The suffix can be **.tif** (recommended), **.img** or **any isce suffix**.
 
