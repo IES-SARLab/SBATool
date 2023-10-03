@@ -63,3 +63,4 @@ cp config/config_flood_gsba.txt example_gsba
 ```
 The same applies to the ```hsba``` example.
 
+## [GSBA](https://github.com/IES-SARLab/SBATool/blob/main/docs/GSBA.md)
