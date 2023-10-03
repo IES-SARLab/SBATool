@@ -1,14 +1,23 @@
 # SBATool
 Split-Based Approach (SBA) for SAR-based Change Detection.
 This tool contains two algorithms:
-1. ```GSBA```: Growing Split-Based Approach. Parallel computation is supported.
-2. ```HSBA```: Hierarchical Split-Based Approach. 
+  - ```GSBA```: Growing Split-Based Approach. Parallel computation is supported.
+  - ```HSBA```: Hierarchical Split-Based Approach. 
 
 For detailed information about **HSBA**, refer to:
 
 Chini, M., Hostache, R., Giustarini, L., & Matgen, P. (2017). A hierarchical split-based approach for parametric thresholding of SAR images: Flood inundation as a test case. Ieee Transactions On Geoscience and Remote Sensing, 55(12), 6975-6988. https://doi.org/10.1109/TGRS.2017.2737664
 
 Detailed information about **GSBA** is still under review (as of 2 Oct 2023).
+
+## Contents
+
+1. [Environment Preparation](#environment-preparation)
+2. [Input Data Files](#input-data-files)
+3. [Input Config Files](#input-config-files)
+4. [GSBA](https://github.com/IES-SARLab/SBATool/blob/main/docs/GSBA.md)
+5. [HSBA](https://github.com/IES-SARLab/SBATool/blob/main/docs/HSBA.md)
+------
 
 ## Environment Preparation
 It is recommended that you run SBATool in MATLAB 2019b or later versions. **Note:** Errors may appear if you run in MATLAB 2023 or later versions.
@@ -63,4 +72,3 @@ cp config/config_flood_gsba.txt example_gsba
 ```
 The same applies to the ```hsba``` example.
 
-## [GSBA](https://github.com/IES-SARLab/SBATool/blob/main/docs/GSBA.md)
