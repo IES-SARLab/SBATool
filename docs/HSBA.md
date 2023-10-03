@@ -1,4 +1,7 @@
-# HSBA
+# Hierarchical Split-Based Approach (HSBA)
+
+## Content
+
 ## Job Configuration
 Here is an example of the job configuration file ```config_flood_hsba.txt``` for HSBA:
 ```matlab
