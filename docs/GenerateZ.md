@@ -8,7 +8,7 @@
 ------
 
 ## Input Data
-In the folder ```example_preprc```, you should see two example folders:
+In the folder ```example_preproc```, you should see two example folders:
  - ```stack_isce```
  - ```stack_tif```
 
