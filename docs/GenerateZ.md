@@ -14,7 +14,7 @@ In the folder ```example_preproc```, you should see two example folders:
 
 In the folder ```stack_isce```, each image is the geocoded amplitude file (single-band) from ISCE. You can either produce this file from the geocoded SLC files by using ```imageMath.py``` in ISCE, or change the scripts [```p01_produceZmap.m```](https://github.com/IES-SARLab/SBATool/blob/main/example_preproc/p01_produceZmap.m) to suite your data format.
 
-In the folder ```stack_tif```, each image is the geotiff amplitude file from SNAP.
+In the folder ```stack_tif```, each image is the geotiff amplitude file from SNAP (or another other software).
 
 ## Example Script
 The script [```p01_produceZmap.m```](https://github.com/IES-SARLab/SBATool/blob/main/example_preproc/p01_produceZmap.m) provides examples of turning amplitude stack into Z-score map.
