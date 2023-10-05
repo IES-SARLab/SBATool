@@ -24,4 +24,3 @@ For more information regarding Z-score map, refer to:
 
 Lin, N. Y., Yun, S.-H., Bhardwaj, A., & Hill, M. E. (2019). Urban Flood Detection with Sentinel-1 Multi-Temporal Synthetic Aperture Radar (SAR) Observations in a Bayesian Framework: A Case Study for Hurricane Matthew. _Remote Sensing_, 11(15), 1-22. https://doi.org/10.3390/rs11151778 
 
-Lin, Y. N., Chen, Y.-C., Kuo, Y.-T., & Chao, W.-A. (2022). Performance Study of Landslide Detection Using Multi-Temporal SAR Images. _Remote Sensing_, 14(10). https://doi.org/10.3390/rs14102444 
