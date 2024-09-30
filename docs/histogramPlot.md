@@ -2,7 +2,7 @@
 
 ## Content
 1. [Load the image](#load-the-image)
-2. [Histogram plotting Functions](#histogram-plotting-functions)
+2. [Histogram plotting functions](#histogram-plotting-functions)
 
 ------
 
@@ -17,7 +17,7 @@ Launch MATLAB, and load and view the image by doing:
 >> figure; imagesc(I)
 ```
 
-## Histogram plotting Functions
+## Histogram plotting functions
 There are several histogram plotting functions available for you to view the histogram fitting result.
 
 1. ```plotBlkStat```: Plot and fit the histogram of a selected block
