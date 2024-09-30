@@ -85,9 +85,9 @@ end
 
 %%% Section to merge results of amp- and amp+ changes
 if ct==1 %Z-
-    FPMboth = FPMlow*2;
+    FPMboth = FPMlow*1;
 elseif ct==3 %Z+ 
-    FPMboth = FPMhigh*1; 
+    FPMboth = FPMhigh*2; 
 elseif ct==0 %both
     FPMboth = FPMhigh*2 + FPMlow*1; % 1=low, 2=high
 end
@@ -95,9 +95,9 @@ end
 outfile1 = sprintf('%s/%s_clstX_%s_bw%d_%d.tif',fpmdir,prefix,methodstr,bwp1low,bwp1high);
 outfilep = sprintf('%s/%s_clstX_%s_prob.tif',fpmdir,prefix,methodstr);
 if ct==1 %Z- 
-    pboth = getPboth(plow,phigh*0,FPMboth);
+    pboth = getPboth(plow,plow*0,FPMboth);
 elseif ct==3 %Z+
-    pboth = getPboth(plow*0,phigh,FPMboth);
+    pboth = getPboth(phigh*0,phigh,FPMboth);
 elseif ct==0 %both
     pboth = getPboth(plow,phigh,FPMboth);
 end

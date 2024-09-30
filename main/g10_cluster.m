@@ -93,7 +93,14 @@ if ~docluster
     title('Probability')
 
     tight_subplot(1,3,3,'gap',gap,'marg_h',marg_h,'marg_w',marg_w);
-    cb3 = [0 0 0;0 0 1;1 0 0];
+    switch ct
+        case 0
+            cb3 = [0 0 0;0 0 1;1 0 0];
+        case 1
+            cb3 = [0 0 0;0 0 1];
+        case 3
+            cb3 = [0 0 0;1 0 0];
+    end
     imagesc(FPMboth,'AlphaData',(FPMboth~=0));
     colormap(gca,cb3)
     hold on;

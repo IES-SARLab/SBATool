@@ -67,7 +67,7 @@ if startfrom==2
         if (ct==0)|(ct==1) %ct (changetype) is specified in fconfig
             startfrom=3;
         elseif ct==3
-            if ~split
+            if ~dosplit
                 startfrom=4;
             else
                 display('if dosplit=true, need to manually check if all splits finishes')
@@ -98,7 +98,7 @@ if startfrom==3
         if (ct==0)|(ct==3) %ct (changetype) is specified in fconfig
             startfrom=4;
         elseif ct==1
-            if ~split
+            if ~dosplit
                 startfrom=5;
             else
                 display('if dosplit=true, need to manually check if all splits finishes')
@@ -129,7 +129,7 @@ if startfrom==4
         if (ct==0)|(ct==1) %ct (changetype) is specified in fconfig
             startfrom=5; 
         elseif ct==3
-            if ~split
+            if ~dosplit
                 startfrom=6;
             else
                 display('if dosplit=true, need to manually check if all splits finishes')
