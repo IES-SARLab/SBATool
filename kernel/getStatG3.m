@@ -1,5 +1,5 @@
 function [ P,M,fh ] = getStatG3( img, varargin ) 
-% function [ P, M, fh ] = getStatG3( img, (pltfig, debug, Gtype) ) 
+% function [ P, M, fh ] = getStatG3( img, (pltfig, debug) ) 
 %
 %  P: parameter structrue with G3p1,G3p2,G3p3
 %  M: metric structure with BC,AD1,AD3,SR1,SR3,AS1,AS3,NIA1,NIA3
@@ -7,7 +7,6 @@ function [ P,M,fh ] = getStatG3( img, varargin )
 
     if numel(varargin)>0; pltfig = varargin{1}; else; pltfig = 0; end
     if numel(varargin)>1; debug = varargin{2}; else; debug  = 0; end
-    if numel(varargin)>2; Gtype = varargin{3}; else; Gtype  = 3; end
 
     % calculate the statistics for the tile
 %    %m = [-3.0000  0  3.9]; %guess

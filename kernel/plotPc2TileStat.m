@@ -1,7 +1,22 @@
-function varargout=plotPc2TileStat(I,x,y,tsize,shift,varargin)
-%function [(P,M,fh)]=plotPc2TileStat(I,x,y,tsize,shift,(pltmap,debug,Gtype))
+function varargout=plotPc2TileStat(I,x,y,tsize,varargin)
+%function [(P,M,fh)]=plotPc2TileStat(I,x,y,tsize,(pltmap,debug))
+% Plot histogram of the tile where a given point (x,y) is located at the center
 %
-%  Get the histogram at the tile with point (x,y) a the center
+% Input
+%      I: Image matrix (need to be preloaded using readRaster)
+%      x: x location in pixel 
+%      y: y location in pixel
+%  tsize: tile size  (integer number)
+% pltmap: 1 for plotting the map; default = 0
+%  debug: 1 for entering debug mode (for advanced user only); default=0
+%
+% Output
+%      P: probabiliy parameters amplitude, mean, std for 1st, 2nd, 3rd Gaussian
+%      M: metrics in order of [BC,AD1,AD3,SR1,SR3,AS1,AS3,NIA1,NIA3]
+%     fh: figure handel
+% tileID: ID of the tile where the point (x,y) is located within
+%
+% NinaLin@2024
 
 if numel(varargin)>0; pltmap = varargin{1}; else; pltmap = 0; end
 if numel(varargin)>1; debug  = varargin{2}; else; debug  = 0; end
@@ -31,7 +46,7 @@ end
 if nargout > 1
     varargout{2} = M;
 end
-if narargout > 3
+if nargout > 2
     varargout{3} = fh;
 end
 

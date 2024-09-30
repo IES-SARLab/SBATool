@@ -1,13 +1,23 @@
 function varargout=plotBlkStat(I,xv,yv,varargin)
-%function [(P,M,fh,tileID)]=plotBlkTileStat(I,xv,yv,(pltmap,debug,Gtype))
+%function [(P,M,fh)]=plotBlkStat(I,xv,yv,(pltmap,debug))
+% Plot histogram of selected block
 %
-% xv: [x1 x2]
-% yv: [y1 y2]
-
+% Input
+%      I: Image matrix (need to be preloaded using readRaster)
+%     xv: block xbounds in [x1 x2]
+%     yv: block ybounds in [y1 y2]
+% pltmap: 1 for plotting the map; default = 0
+%  debug: 1 for entering debug mode (for advanced user only); default=0
+%
+% Output
+%      P: probabiliy parameters amplitude, mean, std for 1st, 2nd, 3rd Gaussian
+%      M: metrics in order of [BC,AD1,AD3,SR1,SR3,AS1,AS3,NIA1,NIA3]
+%     fh: figure handel
+%
+% NinaLin@2024
 
 if numel(varargin)>0; pltmap = varargin{1}; else; pltmap = 0; end
 if numel(varargin)>1; debug  = varargin{2}; else; debug  = 0; end
-if numel(varargin)>2; Gtype  = varargin{3}; else; Gtype = 3; end
 
 if pltmap
     figure; 
@@ -20,7 +30,7 @@ end
 
 tmpImg = I(yv(1):yv(2), xv(1):xv(2));
 % figure; imagesc(tmpImg); colorbar
-[ P,M,fh ] = getStatG3( tmpImg, 1, debug, Gtype ); 
+[ P,M,fh ] = getStatG3( tmpImg, pltmap, debug ); 
 blksize = (xv(2)-xv(1)+1)*(yv(2)-yv(1)+1);
 
 if nargout > 0
@@ -43,7 +53,7 @@ fprintf(1,'2nd Gaussian amp = %5f, mean = %4.2f, std = %4.2f\n',P.G3p2(1),P.G3p2
 fprintf(1,'3rd Gaussian amp = %5f, mean = %4.2f, std = %4.2f\n',P.G3p3(1),P.G3p3(2),P.G3p3(3));
 
 
-[G,BC,c1,c2] = getStatG1( tmpImg, 1, debug, Gtype ); 
+[G,BC,c1,c2] = getStatG1( tmpImg, 1, debug ); 
 fprintf(1,'BC (single mode)  = %02d\n',round(BC*100));
 fprintf(1,'Lower cutoff: %0.2f\n',c1);
 fprintf(1,'Upper cutoff: %0.2f\n',c2);
