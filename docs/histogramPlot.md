@@ -1,4 +1,4 @@
-# Histogram Plots
+# Plot and Fit Histogram (for data inspection)
 
 ## Content
 1. [Load the image](#load-the-image)
