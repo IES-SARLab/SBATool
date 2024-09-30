@@ -2,7 +2,7 @@
 
 ## Content
 1. [Load the image](#load-the-image)
-2. [Plot by setting a rectangular block](#plot-by-setting-a-rectangular-block)
+2. [Histogram plotting Functions](#histogram-plotting-functions)
 
 ------
 
