@@ -17,7 +17,8 @@ Detailed information about **GSBA** is still under review (as of 2 Oct 2023).
 3. [Input Config Files](#input-config-files)
 4. [Running Growing Split-Based Approach (GSBA)](https://github.com/IES-SARLab/SBATool/blob/main/docs/GSBA.md)
 5. [Running Hierarchical Split-Based Approach (HSBA)](https://github.com/IES-SARLab/SBATool/blob/main/docs/HSBA.md)
-6. [Reference](#reference)
+6. [Plot and Fit Histogram (for data inspection)](https://github.com/IES-SARLab/SBATool/blob/main/docs/histogramPlot.md)
+7. [Reference](#reference)
 
 ------
 
