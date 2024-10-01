@@ -3,7 +3,7 @@ npool=12                 % set number of workers for parallel processing
 
 %%% data preparation (g01)
 filename=lumberton.tif
-projdir=./                % the relative or absolute path that contains data, mask, hand and val directories 
+projdir=./                % the relative or absolute path that contains data, mask, hand and val files
 usemask=false             % use mask with same input filename but under {projdir}/mask folder (false)
 dolee=false               % true for additional lee filter (false)
 split=false               % split image into 2x2 sub-images (memory issue) (false)
