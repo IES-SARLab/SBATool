@@ -65,6 +65,7 @@ else
     [G1Ahat,G1Mhat,G1Shat] = fillStat(G1A,G1M,G1S,method);
     [G2Ahat,G2Mhat,G2Shat] = fillStat(G2A,G2M,G2S,method);
 end
+mat2geotiff(int16(G1Ahat*100), X,Y,sprintf('%s/%s_intp_lo_%s_G1A.tif',qcdir,qcprefix,methodstr),'geotiff',ctype,16,[],info)
 mat2geotiff(int16(G1Mhat*100), X,Y,sprintf('%s/%s_intp_lo_%s_G1M.tif',qcdir,qcprefix,methodstr),'geotiff',ctype,16,[],info)
 mat2geotiff(int16(G1Shat*100), X,Y,sprintf('%s/%s_intp_lo_%s_G1S.tif',qcdir,qcprefix,methodstr),'geotiff',ctype,16,[],info)
 

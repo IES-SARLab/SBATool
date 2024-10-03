@@ -102,6 +102,7 @@ else
     [G1Ahat,G1Mhat,G1Shat,G1Mtr3,G1Str3] = interpTileStat(ampEventNorm,G1Atr2,G1Mtr2,G1Str2,xtilevec,ytilevec,method);
     [G2Ahat,G2Mhat,G2Shat] = interpTileStat(ampEventNorm,G2Atr2,G2Mtr2,G2Str2,xtilevec,ytilevec,method);
 end
+mat2geotiff(int16(G1Ahat*100), X,Y,sprintf('%s/%s_intp_lo%d_%s_G1A.tif',qcdir,qcprefix,tsize,methodstr),'geotiff',ctype,16,[],info)
 mat2geotiff(int16(G1Mhat*100), X,Y,sprintf('%s/%s_intp_lo%d_%s_G1M.tif',qcdir,qcprefix,tsize,methodstr),'geotiff',ctype,16,[],info)
 mat2geotiff(int16(G1Shat*100), X,Y,sprintf('%s/%s_intp_lo%d_%s_G1S.tif',qcdir,qcprefix,tsize,methodstr),'geotiff',ctype,16,[],info)
 

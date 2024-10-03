@@ -105,6 +105,7 @@ else
     [G3Ahat,G3Mhat,G3Shat,G3Mtr3,G3Str3] = interpTileStat(ampEventNorm,G3Atr2,G3Mtr2,G3Str2,xtilevec,ytilevec,method);
     [G2Ahat,G2Mhat,G2Shat] = interpTileStat(ampEventNorm,G2Atr2,G2Mtr2,G2Str2,xtilevec,ytilevec,method);
 end
+mat2geotiff(int16(G3Ahat*100), X,Y,sprintf('%s/%s_intp_hi%d_G3A.tif',qcdir,qcprefix,tsize),'geotiff',ctype,16,[],info)
 mat2geotiff(int16(G3Mhat*100), X,Y,sprintf('%s/%s_intp_hi%d_G3M.tif',qcdir,qcprefix,tsize),'geotiff',ctype,16,[],info)
 mat2geotiff(int16(G3Shat*100), X,Y,sprintf('%s/%s_intp_hi%d_G3S.tif',qcdir,qcprefix,tsize),'geotiff',ctype,16,[],info)
 
